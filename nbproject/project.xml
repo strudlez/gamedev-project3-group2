@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.python.project</type>
     <configuration>
         <data xmlns="http://nbpython.dev.java.net/ns/php-project/1">
-            <name>NewPythonProject</name>
+            <name>gamedev-project3</name>
             <sources>
                 <root id="gamedev-project3-group2.dir"/>
             </sources>
