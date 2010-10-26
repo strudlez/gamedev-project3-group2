@@ -7,26 +7,27 @@ from direct.task import Task #for update functions
 import sys, math, random
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
+from Line import Line
 
 class World(DirectObject):  #Subclassing here is necessary to accept events
 
     def __init__(self):
         base.disableMouse()                     #Turn off mouse control, otherwise camera is not repositional
         render.setShaderAuto()
-	self.loadModels()
+        self.loadModels()
         self.setResolution()
         self.setLights()
         self.loadEnvironment()
         self.setResolution()
         self.setupCollisions()
-	camera.setPosHpr(0, 15, 7, 0, 15, 0)
-	self.isMoving = False
-	
-	self.keymap = {"left":0, "right":0, "forward":0, "backwards":0}
-	self.prevtime = 0
-	taskMgr.add(self.move, "moveTask")
-	
-	self.accept("arrow_up", self.setKey, ["forward", 1])
+        camera.setPosHpr(0, 15, 7, 0, 15, 0)
+        self.isMoving = False
+        
+        self.keymap = {"left":0, "right":0, "forward":0, "backwards":0}
+        self.prevtime = 0
+        taskMgr.add(self.move, "moveTask")
+        
+        self.accept("arrow_up", self.setKey, ["forward", 1])
         self.accept("arrow_up-up", self.setKey, ["forward", 0]) 
         self.accept("arrow_left", self.setKey, ["left", 1])
         self.accept("arrow_left-up", self.setKey, ["left", 0])
@@ -37,7 +38,8 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
 
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
-
+        
+        self.line=Line(self)
 
     def loadEnvironment(self):
         """Loads the environment model into the world"""
@@ -106,8 +108,12 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         base.win.requestProperties(wp)
 	
     def move(self, task): #all methods added to taskMgr get passed task info
+        
 	"""moves the panda depending on the keymap"""
-	elapsed = task.time - self.prevtime
+    elapsed = task.time - self.prevtime
+    self.line.move(elapsed,keymap)
+    return
+	
 	camera.lookAt(self.panda)
 	if self.keymap["left"]:
 		self.panda.setH(self.panda.getH() + elapsed * 100)
