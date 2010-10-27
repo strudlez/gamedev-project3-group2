@@ -24,7 +24,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         camera.setPosHpr(0, 15, 7, 0, 15, 0)
         self.isMoving = False
         
-        self.keymap = {"left":0, "right":0, "forward":0, "backwards":0}
+        self.keymap = {"left":0, "right":0, "forward":0, "backwards":0, "add":0}
         self.prevtime = 0
         taskMgr.add(self.move, "moveTask")
         
@@ -36,6 +36,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.accept("arrow_right-up", self.setKey, ["right", 0])
         self.accept("arrow_down", self.setKey, ["backwards", 1])
         self.accept("arrow_down-up", self.setKey,["backwards", 0])
+        self.accept("a", self.setKey,["add", 1])
 
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
