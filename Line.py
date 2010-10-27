@@ -9,6 +9,7 @@ class Line:
         self.angleTo=90
         self.canTurn=0
         self.members=[]
+        self.frontPos=Vec3(0,0,0)
         self.pos=[]
         self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
         #self.actor.setControlEffect("eat", 1)
@@ -18,7 +19,7 @@ class Line:
         self.addMember()
     def addMember(self):
         member=LineMember(self.actor)
-        self.members.append(member)
+        self.members.append(self,member,self.fronPos)
         
     def move(self,elapsed,keymap):
         if keymap["left"] and self.angle!=270:
