@@ -1,5 +1,6 @@
 from LineMember import LineMember
 from direct.actor.Actor import Actor #for animated models
+from pandac.PandaModules import * #basic Panda modules
 import math
 
 class Line:
@@ -16,12 +17,16 @@ class Line:
         self.actor.setScale(.0005)
         #self.actor.setH(self.angle)
         #self.actor.reparentTo(render)
+        self.frontPos=Vec3(1,0,0)
+        self.addMember()
+        self.frontPos=Vec3(2,0,0)
         self.addMember()
     def addMember(self):
-        member=LineMember(self.actor)
-        self.members.append(self,member,self.fronPos)
+        member=LineMember(self,self.actor,self.frontPos,len(self.members)+1)
+        self.members.append(member)
         
     def move(self,elapsed,keymap):
+        top=self.members[0]
         if keymap["left"] and self.angle!=270:
             self.angleTo=90
         elif keymap["right"] and self.angle!=90:
@@ -53,12 +58,15 @@ class Line:
             angle-=8
             if angle<self.angle:angle=self.angle
         angle=angle%360
-        self.actor.setH(angle)
+        
+        #self.actor.setH(angle)
+        
         dist = 0.1
         angle = math.radians(self.angle)
         dx = dist * math.sin(angle)
         dy = dist * -math.cos(angle)
-        self.actor.setPos(self.actor.getX() + dx, self.actor.getY() + dy, 0)
+        
+        #self.actor.setPos(self.actor.getX() + dx, self.actor.getY() + dy, 0)
         
         camera.setH(180)
         camera.setP(0)

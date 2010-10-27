@@ -7,6 +7,7 @@ from direct.task import Task #for update functions
 import sys, math, random
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
+import Globals
 from Line import Line
 
 class World(DirectObject):  #Subclassing here is necessary to accept events
