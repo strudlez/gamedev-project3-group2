@@ -2,7 +2,7 @@ from LineMember import LineMember
 from direct.actor.Actor import Actor #for animated models
 from pandac.PandaModules import * #basic Panda modules
 import math
-import Globals
+from Globals import *
 
 class Line:
     def __init__(self,parent):
@@ -41,7 +41,7 @@ class Line:
             self.angleTo=0
         elif keymap["backwards"] and self.angle!=0:
             self.angleTo=180
-        if self.canTurn and not round(top.node.getY(),2)%self.parent.tileSize and not round(top.node.getX(),2)%self.parent.tileSize:
+        if self.canTurn and not round(top.node.getY(),2)%TILESIZE and not round(top.node.getX(),2)%TILESIZE:
                 self.angle=self.angleTo
                 self.canTurn=0
         else:

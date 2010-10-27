@@ -12,13 +12,13 @@ class LineMember():
             
         else:
             self.angle=front.angle
-            self.pos.setX(front.gridX*self.parent.parent.tileSize)
-            self.pos.setY(front.gridY*self.parent.parent.tileSize)        
+            self.pos.setX(front.gridX*TILESIZE)
+            self.pos.setY(front.gridY*TILESIZE)
         
         self.canMove=0
         
-        self.gridX=self.pos.getX()/self.parent.parent.tileSize
-        self.gridY=self.pos.getY()/self.parent.parent.tileSize
+        self.gridX=self.pos.getX()/TILESIZE
+        self.gridY=self.pos.getY()/TILESIZE
         
         self.node=render.attachNewNode("LineMember%d" % number)
         self.node.setPos(self.pos)
@@ -28,25 +28,23 @@ class LineMember():
         self.node.setH(angle)
     def moveFront(self,angle):
         self.angle=angle
-        #print round(self.node.getY(),2)%self.parent.parent.tileSize, round(self.node.getX(),2)%self.parent.parent.tileSize
-        if not round(self.node.getY(),2)%self.parent.parent.tileSize and not round(self.node.getX(),2)%self.parent.parent.tileSize:
+        if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
             self.setGrid()
         self.moveTo()
     def move(self,front):
         if not self.canMove:
-           # print front.gridX
             if front.gridX!=self.gridX or front.gridY!=self.gridY:
                 self.canMove=1
         if self.canMove:
-            if not round(self.node.getY(),2)%self.parent.parent.tileSize and not round(self.node.getX(),2)%self.parent.parent.tileSize:
+            if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
                 self.setGrid()
                 if front.gridX!=self.gridX:
                     self.angle=270 if front.gridX<self.gridX else 90
                 else: self.angle=0 if front.gridY<self.gridY else 180
             self.moveTo()
     def setGrid(self):
-        self.gridX=self.node.getX()/self.parent.parent.tileSize
-        self.gridY=self.node.getY()/self.parent.parent.tileSize
+        self.gridX=self.node.getX()/TILESIZE
+        self.gridY=self.node.getY()/TILESIZE
         
             
     def moveTo(self):

@@ -6,3 +6,5 @@ globalModelLoader = ModelLoader(ModelMetadataCache())
 GRIDSIZE = 2
 CONGASPEED=0.2
 TURNSPEED=12
+TILESIZE=1
+SCALE=1
