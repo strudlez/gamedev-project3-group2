@@ -7,7 +7,7 @@ class ModelLoader(object):
     def instanceModelTo(self, modelName, parentNode):
         '''loads a model, parents it to parentNode, and applies any metadata to
         it'''
-        model = loader.loadModel(modelName)
+        model = self._getModel(modelName)
         metadata = self._metadataCache.load(self._modelNameToMetadataName(modelName))
         if metadata != None:
             print 'applied to model'
@@ -27,3 +27,6 @@ class ModelLoader(object):
         '''converts name of model to name of it's corresponding metadata file'''
         n, _ = os.path.splitext(name)
         return n + '.meta'
+
+    def _getModel(self, name):
+        return loader.loadModel(name)
