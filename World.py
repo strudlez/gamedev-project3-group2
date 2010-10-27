@@ -39,7 +39,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
         
-        self.tileSize=1.5
+        self.tileSize=2
         self.scale=1
         self.line=Line(self)
 

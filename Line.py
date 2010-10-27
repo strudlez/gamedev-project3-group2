@@ -5,7 +5,6 @@ import math
 class Line:
     def __init__(self,parent):
         self.parent=parent
-        self.dir='l'
         self.angle=90
         self.angleTo=90
         self.canTurn=0
@@ -16,26 +15,26 @@ class Line:
         self.actor.setScale(.0005)
         self.actor.setH(self.angle)
         self.actor.reparentTo(render)
+    def addMember:
+        member=LineMember(self.actor)
+        self.members.append(member)
+        
     def move(self,elapsed,keymap):
-        """if keymap["left"] and self.dir!='r':
-            self.dir='l'
-            self.angle=90
-        elif keymap["right"] and self.dir!='l':
-            self.dir='r'
-            self.angle=270
-        elif keymap["forward"] and self.dir!='d':
-            self.dir='u'
-            self.angle=0
-        elif keymap["backwards"] and self.dir!='u':
-            self.dir='d'
-            self.angle=180"""
-        if keymap["left"]:
-            self.angleTo=self.angle+90
-            keymap["left"]=0
-        if keymap["right"]:
-            self.angleTo=self.angle-90
-            keymap["right"]=0
-        self.angleTo=self.angleTo%360
+        if keymap["left"] and self.angle!=270:
+            self.angleTo=90
+        elif keymap["right"] and self.angle!=90:
+            self.angleTo=270
+        elif keymap["forward"] and self.angle!=180:
+            self.angleTo=0
+        elif keymap["backwards"] and self.angle!=0:
+            self.angleTo=180
+        #~ if keymap["left"]:
+            #~ self.angleTo=self.angle+90
+            #~ keymap["left"]=0
+        #~ if keymap["right"]:
+            #~ self.angleTo=self.angle-90
+            #~ keymap["right"]=0
+        #~ self.angleTo=self.angleTo%360
         if self.canTurn and not round(self.actor.getY(),2)%self.parent.tileSize and not round(self.actor.getX(),2)%self.parent.tileSize:
                 self.angle=self.angleTo
                 self.canTurn=0
@@ -59,6 +58,10 @@ class Line:
         dy = dist * -math.cos(angle)
         self.actor.setPos(self.actor.getX() + dx, self.actor.getY() + dy, 0)
         
-        
-        camera.setPos(self.actor,0,10000,2000)
-        camera.lookAt(self.actor)
+        camera.setH(180)
+        camera.setP(0)
+        camera.setPos(self.actor.getPos())
+        camera.setPos(camera,0,0,30)
+        camera.setP(-90)
+        #camera.lookAt(self.actor)
+        #print camera.
