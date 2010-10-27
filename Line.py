@@ -11,11 +11,12 @@ class Line:
         self.members=[]
         self.pos=[]
         self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
-        self.actor.setControlEffect("eat", 1)
+        #self.actor.setControlEffect("eat", 1)
         self.actor.setScale(.0005)
-        self.actor.setH(self.angle)
-        self.actor.reparentTo(render)
-    def addMember:
+        #self.actor.setH(self.angle)
+        #self.actor.reparentTo(render)
+        self.addMember()
+    def addMember(self):
         member=LineMember(self.actor)
         self.members.append(member)
         
