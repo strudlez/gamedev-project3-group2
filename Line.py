@@ -2,6 +2,7 @@ from LineMember import LineMember
 from direct.actor.Actor import Actor #for animated models
 from pandac.PandaModules import * #basic Panda modules
 import math
+import Globals
 
 class Line:
     def __init__(self,parent):
@@ -17,10 +18,6 @@ class Line:
         self.actor.setScale(.0005)
         #self.actor.setH(self.angle)
         #self.actor.reparentTo(render)
-        self.frontPos=Vec3(1,0,0)
-        self.addMember()
-        self.frontPos=Vec3(2,0,0)
-        self.addMember()
     def addMember(self):
         member=LineMember(self,self.actor,self.frontPos,len(self.members)+1)
         self.members.append(member)
