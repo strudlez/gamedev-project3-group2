@@ -39,6 +39,8 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
         
+        self.tileSize=1.5
+        self.scale=1
         self.line=Line(self)
 
     def loadEnvironment(self):
@@ -78,7 +80,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.panda.reparentTo(render)
         
         self.pandaWalk = self.panda.posInterval(1, (0, -5, 0))
-	
+    
     def setKey(self, key, value):
         self.keymap[key] = value
 
@@ -99,45 +101,46 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         cNodePath = self.panda.attachNewNode(cNode)
         cNodePath.show()
         base.cTrav.addCollider(cNodePath, self.cHandler)
-	
+    
     def setResolution(self):
         """Set the screen resolution"""
         wp = WindowProperties()
         wp.setSize(1024, 768) # there will be more resolutions
-        wp.setFullscreen(True)
+        #wp.setFullscreen(True)
         base.win.requestProperties(wp)
-	
+    
     def move(self, task): #all methods added to taskMgr get passed task info
         
-	"""moves the panda depending on the keymap"""
-    elapsed = task.time - self.prevtime
-    self.line.move(elapsed,keymap)
-    return
-	
-	camera.lookAt(self.panda)
-	if self.keymap["left"]:
-		self.panda.setH(self.panda.getH() + elapsed * 100)
-	if self.keymap["right"]:
-		self.panda.setH(self.panda.getH() - elapsed * 100)
-	if self.keymap["forward"]:
-		dist = .1
-		angle = deg2Rad(self.panda.getH())
-		dx = dist * math.sin(angle)
-		dy = dist * -math.cos(angle)
-		self.panda.setPos(self.panda.getX() + dx, self.panda.getY() + dy, 0)
-			
-	if self.keymap["left"] or self.keymap["right"] or self.keymap["forward"]:
-		if self.isMoving == False:
-			self.isMoving = True
-			self.panda.loop("walk")
-	else:
-		if self.isMoving:
-			self.isMoving = False
-			self.panda.stop("walk")
-			self.panda.pose("walk", 4)
-			
-	self.prevtime = task.time
-	return Task.cont
+        """moves the panda depending on the keymap"""
+        elapsed = task.time - self.prevtime
+        self.line.move(elapsed,self.keymap)
+        self.prevtime = task.time
+        return Task.cont
+        
+        camera.lookAt(self.panda)
+        if self.keymap["left"]:
+            self.panda.setH(self.panda.getH() + elapsed * 100)
+        if self.keymap["right"]:
+            self.panda.setH(self.panda.getH() - elapsed * 100)
+        if self.keymap["forward"]:
+            dist = .1
+            angle = deg2Rad(self.panda.getH())
+            dx = dist * math.sin(angle)
+            dy = dist * -math.cos(angle)
+            self.panda.setPos(self.panda.getX() + dx, self.panda.getY() + dy, 0)
+                
+        if self.keymap["left"] or self.keymap["right"] or self.keymap["forward"]:
+            if self.isMoving == False:
+                self.isMoving = True
+                self.panda.loop("walk")
+        else:
+            if self.isMoving:
+                self.isMoving = False
+                self.panda.stop("walk")
+                self.panda.pose("walk", 4)
+                
+        self.prevtime = task.time
+        return Task.cont
 
     
 w = World()
