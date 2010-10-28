@@ -22,6 +22,7 @@ class LineMember():
         
         self.node=render.attachNewNode("LineMember%d" % number)
         self.node.setPos(self.pos)
+        self.node.setH(self.angle)
         actor.instanceTo(self.node)
     def setAngle(self,angle):
         self.angle=angle
