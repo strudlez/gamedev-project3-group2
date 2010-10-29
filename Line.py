@@ -59,14 +59,16 @@ class Line:
             self.turn='r'
         elif keymap["forward"] and (self.angle+self.cameraAngle)%360!=180:
             self.angleTo=0+self.cameraAngle
+            keymap["forward"]=0
         elif keymap["backwards"] and (self.angle+self.cameraAngle)%360!=0:
             self.angleTo=180+self.cameraAngle
+            keymap["backwards"]=0
         self.angleTo=self.angleTo%360
         if self.canTurn and not round(top.node.getY(),2)%TILESIZE and not round(top.node.getX(),2)%TILESIZE:
                 self.angle=self.angleTo
                 self.canTurn=0
         if not self.longLine and (self.cameraAngle-self.angle)%360==180:
-            self.cameraAngle=(self.cameraAngle+180)%360
+            self.cameraAngle=(self.cameraAngle+(90 if self.turn=='l' else -90))%360
             self.cameraDiff=180 if self.turn=='l' else -180
         
             #print camera.getH(),self.cameraDiff,self.lastAngle
@@ -76,7 +78,7 @@ class Line:
         for i in range(1,len(self.members)):
             self.members[i].move(self.members[i-1])
         angleTo=self.cameraAngle+self.cameraDiff
-        camera.setH(turnAngle(camera.getH(),angleTo,10))
+        camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))
         #camera.setP(-90)
         camera.setP(moveInc(camera.getP(),self.cameraDown,0.07))
         camera.setPos(top.node.getPos())
