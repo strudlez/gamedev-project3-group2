@@ -9,6 +9,8 @@ from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
 import Globals
 from Line import Line
+from Level import Level,LevelGrid
+from LevelWalker import LevelWalker
 
 class World(DirectObject):  #Subclassing here is necessary to accept events
 
@@ -40,9 +42,10 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
 
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
-        
+        self.level=Level()
         
         self.line=Line(self)
+        
 
     def loadEnvironment(self):
         """Loads the environment model into the world"""

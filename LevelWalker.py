@@ -1,9 +1,10 @@
 import string
 
 class LevelWalker(object):
-    def __init__(self, level, location):
+    def __init__(self, level, location, grid='floor1'):
         self._level = level
         self._location = location
+        self._grid=grid
 
     def getCell(self):
         return self._level._grids[self._grid].getCell(self._x, self._y)
@@ -20,13 +21,23 @@ class LevelWalker(object):
             units *= -1
             dir = {'U':'D', 'D':'U', 'L':'R', 'R':'L'}[dir]
 
-        dx, dy = {'U':(0, -1), 'D':(0, 1), 'L':(-1, 0), 'R':(1, 0)}
-
+        dx, dy = {'U':(0, -1), 'D':(0, 1), 'L':(-1, 0), 'R':(1, 0)}[dir]
+        
         # walk forward one unit at a time
         for a in xrange(0, units):
+            if self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy):
+                print "OH MY GOD, YOU JUST KILLED A PANDA",self._location.x+dx,self._location.y+dy
+                return 0
+            self._level._grids[self._grid].setCell(self._location.x,self._location.y,0)
             self._location.x += dx
             self._location.y += dy
+            self._level._grids[self._grid].setCell(self._location.x,self._location.y,1)
             # TODO IMPLEMENT WARPS
             # if self._level._warps(LevelLocation)
-
+        
         # all done!
+        return 1
+class Location:
+    def __init__(self,x,y):
+        self.x=x
+        self.y=y

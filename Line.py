@@ -53,7 +53,7 @@ class Line:
         top=self.members[0]
         if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
             self.angleTo=90+self.cameraAngle
-            print (self.angle+self.cameraAngle)%360
+            #print (self.angle+self.cameraAngle)%360
             
             self.turn='l'
             keymap["left"]=0

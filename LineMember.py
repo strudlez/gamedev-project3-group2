@@ -1,6 +1,7 @@
 from pandac.PandaModules import * #basic Panda modules
 from pandac.PandaModules import *
 from Globals import *
+from LevelWalker import LevelWalker,Location
 import math
 
 class LineMember():
@@ -20,6 +21,8 @@ class LineMember():
         self.gridX=self.pos.getX()/TILESIZE
         self.gridY=self.pos.getY()/TILESIZE
         
+        self.levelWalker=LevelWalker(self.parent.parent.level,Location(self.gridX,self.gridY))
+        
         self.node=render.attachNewNode("LineMember%d" % number)
         self.node.setPos(self.pos)
         self.node.setH(self.angle)
@@ -31,6 +34,8 @@ class LineMember():
         self.angle=angle
         if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
             self.setGrid()
+            dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
+            self.levelWalker.walk(dir)
         self.moveTo()
     def move(self,front):
         if not self.canMove:
@@ -42,10 +47,15 @@ class LineMember():
                 if front.gridX!=self.gridX:
                     self.angle=270 if front.gridX<self.gridX else 90
                 else: self.angle=0 if front.gridY<self.gridY else 180
+                
+                dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
+                self.levelWalker.walk(dir)
+
             self.moveTo()
     def setGrid(self):
         self.gridX=self.node.getX()/TILESIZE
         self.gridY=self.node.getY()/TILESIZE
+        
         
             
     def moveTo(self):
