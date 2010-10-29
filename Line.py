@@ -51,16 +51,20 @@ class Line:
             keymap["add"]=0
             self.addMember()
         top=self.members[0]
-        if keymap["left"] and (self.angle+self.cameraAngle)%360!=270:
+        if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
             self.angleTo=90+self.cameraAngle
+            print (self.angle+self.cameraAngle)%360
+            
             self.turn='l'
-        elif keymap["right"] and (self.angle+self.cameraAngle)%360!=90:
+            keymap["left"]=0
+        elif keymap["right"] and (self.angle-self.cameraAngle)%180!=90:
             self.angleTo=270+self.cameraAngle
             self.turn='r'
-        elif keymap["forward"] and (self.angle+self.cameraAngle)%360!=180:
+            keymap["right"]=0
+        elif keymap["forward"] and (self.angle-self.cameraAngle)%180!=0:
             self.angleTo=0+self.cameraAngle
             keymap["forward"]=0
-        elif keymap["backwards"] and (self.angle+self.cameraAngle)%360!=0:
+        elif keymap["backwards"] and (self.angle-self.cameraAngle)%180!=0:
             self.angleTo=180+self.cameraAngle
             keymap["backwards"]=0
         self.angleTo=self.angleTo%360
