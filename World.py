@@ -7,7 +7,7 @@ from direct.task import Task #for update functions
 import sys, math, random
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
-import Globals
+from Globals import *
 from Line import Line
 from Level import Level,LevelGrid
 from LevelWalker import LevelWalker
@@ -50,11 +50,25 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
     def loadEnvironment(self):
         """Loads the environment model into the world"""
         #Load the environment
-        self.env = loader.loadModel("EGGS/environment")
+        self.env = loader.loadModel("models/livingroom")
         self.env.reparentTo(render)
-        self.env.setScale(4)
-        self.env.setPos(-8, 42, 0)
-
+        self.env.setScale(2)
+        self.env.setPos(-2, -2, 0)
+        self.env.setP(270)
+        # self.lamp = loader.loadModel("models/flamberge")
+        # self.lamp.reparentTo(render)
+        # self.lamp.setPos(18, 20, 0)
+        # self.lamp.setP(270)
+        # self.snack = loader.loadModel("models/snacktable")
+        # self.snack.reparentTo(render)
+        # self.snack.setPos(4, 20, 0)
+        # self.snack.setP(270)
+        # self.snack.setScale(2)
+        # self.couch = loader.loadModel("models/couch")
+        # self.couch.reparentTo(render)
+        # self.couch.setPos(13, 20, 0)
+        # self.couch.setP(270)
+        # self.couch.setScale(2)
 
     def setLights(self):
         """Creates a global light"""
