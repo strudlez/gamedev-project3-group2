@@ -18,8 +18,8 @@ class LineMember():
         
         self.canMove=0
         
-        self.gridX=self.pos.getX()/TILESIZE
-        self.gridY=self.pos.getY()/TILESIZE
+        self.gridX=int(round(self.pos.getX()/TILESIZE,2))
+        self.gridY=int(round(self.pos.getY()/TILESIZE,2))
         
         self.levelWalker=LevelWalker(self.parent.parent.level,Location(self.gridX,self.gridY))
         
@@ -27,16 +27,27 @@ class LineMember():
         self.node.setPos(self.pos)
         self.node.setH(self.angle)
         actor.instanceTo(self.node)
+    def delete(self):
+        self.node.removeNode()
+        self.levelWalker.unset()
     def setAngle(self,angle):
         self.angle=angle
         self.node.setH(angle)
     def moveFront(self,angle):
+        ret=0
         self.angle=angle
         if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
             self.setGrid()
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
-            self.levelWalker.walk(dir)
+            col=self.levelWalker.walk(dir)
+            #print self.gridX,self.gridY,self.levelWalker._location.x,self.levelWalker._location.y
+            if col:
+                colX,colY=col
+                #print "OH MY GOD, YOU JUST KILLED A PANDA",colX,colY
+                ret=1
+                
         self.moveTo()
+        return ret
     def move(self,front):
         if not self.canMove:
             if front.gridX!=self.gridX or front.gridY!=self.gridY:
@@ -53,8 +64,8 @@ class LineMember():
 
             self.moveTo()
     def setGrid(self):
-        self.gridX=self.node.getX()/TILESIZE
-        self.gridY=self.node.getY()/TILESIZE
+        self.gridX=int(round(self.node.getX()/TILESIZE,2))
+        self.gridY=int(round(self.node.getY()/TILESIZE,2))
         
         
             

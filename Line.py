@@ -46,6 +46,14 @@ class Line:
             else:
                 self.cameraDist+=1
                 self.cameraDown-=2
+    def hitMember(self,x,y):
+        for i in range(1,len(self.members)):
+            if self.members[i].gridX==x and self.members[i].gridY==y:
+                for j in range(i,len(self.members)):
+                    self.members[-1].delete()
+                    self.members.pop(-1)
+                self.members[0].levelWalker.set()
+                break
     def move(self,elapsed,keymap):
         if keymap["add"]:
             keymap["add"]=0
@@ -78,9 +86,13 @@ class Line:
             #print camera.getH(),self.cameraDiff,self.lastAngle
         else:
             self.canTurn=1
-        top.moveFront(self.angle)
+        ret=top.moveFront(self.angle)
         for i in range(1,len(self.members)):
             self.members[i].move(self.members[i-1])
+        if ret:
+            print len(self.members)
+            self.hitMember(top.gridX,top.gridY)
+            print len(self.members)
         angleTo=self.cameraAngle+self.cameraDiff
         camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))
         #camera.setP(-90)

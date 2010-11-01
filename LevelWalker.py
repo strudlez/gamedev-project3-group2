@@ -5,10 +5,16 @@ class LevelWalker(object):
         self._level = level
         self._location = location
         self._grid=grid
-
+        
+    
     def getCell(self):
-        return self._level._grids[self._grid].getCell(self._x, self._y)
-
+        return self._level._grids[self._grid].getCell(self._location.x, self._location.y)
+    
+    def unset(self):
+        self._level._grids[self._grid].setCell(int(round(self._location.x,2)),int(round(self._location.y,2)),0)
+    def set(self):
+        self._level._grids[self._grid].setCell(int(round(self._location.x,2)),int(round(self._location.y,2)),1)
+    
     def walk(self, direction, units = 1):
         '''walks across the level in the direction the specified number of
         units.  Throws an exception if it walks off the side of a grid'''
@@ -25,18 +31,19 @@ class LevelWalker(object):
         
         # walk forward one unit at a time
         for a in xrange(0, units):
-            if self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy):
-                print "OH MY GOD, YOU JUST KILLED A PANDA",self._location.x+dx,self._location.y+dy
-                return 0
-            self._level._grids[self._grid].setCell(self._location.x,self._location.y,0)
+            if self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)==1:
+                return int(round(self._location.x+dx,0)),int(round(self._location.y+dy,0))
+            #self._level._grids[self._grid].setCell(int(round(self._location.x,2)),int(round(self._location.y,2)),0)
+            self.unset()
             self._location.x += dx
             self._location.y += dy
-            self._level._grids[self._grid].setCell(self._location.x,self._location.y,1)
+            #self._level._grids[self._grid].setCell(int(round(self._location.x,2)),int(round(self._location.y,2)),1)
+            self.set()
             # TODO IMPLEMENT WARPS
             # if self._level._warps(LevelLocation)
         
         # all done!
-        return 1
+        return None
 class Location:
     def __init__(self,x,y):
         self.x=x

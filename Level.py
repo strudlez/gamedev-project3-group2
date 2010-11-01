@@ -22,7 +22,7 @@ class LevelGrid(object):
         self.grid = array.array('H', [0]*width*height)
 
     def getCell(self, x, y):
-        return self.grid[int(y) * self.width + int(x)]
+        return self.grid[int(round(y,2)) * self.width + int(round(x,2))]
 
     def setCell(self, x, y, newValue):
-        self.grid[int(y) + self.width + int(x)] = newValue
+        self.grid[int(round(y,2)) * self.width + int(round(x,2))] = newValue
