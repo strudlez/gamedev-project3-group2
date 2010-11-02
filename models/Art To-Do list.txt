@@ -4,9 +4,8 @@ snuggle animation?
 -textures
 couch pattern
 bedsheet pattern
-speaker
-laundry machines (dryer/washer)
-tv stand?
-walls
+speaker (2x1x1)
+laundry machines (dryer/washer) (2x2x2)
+walls (5x1x1)
 
 -music
