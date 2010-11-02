@@ -6,7 +6,7 @@ globalModelLoader = ModelLoader(ModelMetadataCache())
 GRIDSIZE = 2
 CONGASPEED=0.1
 TURNSPEED=12
-TILESIZE=1
+TILESIZE=2
 SCALE=1
 
 def turnAngle(angle,angleTo,amt):

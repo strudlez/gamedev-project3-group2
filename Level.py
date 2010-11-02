@@ -14,15 +14,34 @@ class Level(object):
 
 
 class LevelGrid(object):
-    def __init__(self, width=250,height=250, offsetX=-125,offsetY=-125):
+    def __init__(self, width=13,height=13, offsetX=0,offsetY=-1):
         self.offsetX = offsetX
         self.offsetY = offsetY
         self.width = width
         self.height = height
+        col=[2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,3,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,3,3,3,0,0,0,0,0,2,2,3,0,0,3,3,3,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,3,3,3,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,1,1,2,2]
+        col=[2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,3,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,3,3,3,0,0,0,0,0,2,2,3,0,0,3,3,3,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,3,3,3,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,1,1,2,2]
         self.grid = array.array('H', [0]*width*height)
-
+        for i in range(len(self.grid)):
+            self.grid[i]=col[i]
+        for y in range(height):
+            s=''
+            for x in range(width):
+                s+='%d' % self.grid[y * self.width + x]
+            print s
+    
+    def printGrid(self):
+        print '-'*self.width
+        for y in range(self.height):
+            s=''
+            for x in range(self.width):
+                s+='%d' % self.grid[y * self.width + x]
+            print s
     def getCell(self, x, y):
-        return self.grid[int(round(y,2)) * self.width + int(round(x,2))]
-
+        #print x,y
+        return self.grid[(self.height-y-1+self.offsetY) * self.width + x+self.offsetX]
+    
     def setCell(self, x, y, newValue):
-        self.grid[int(round(y,2)) * self.width + int(round(x,2))] = newValue
+        self.grid[(self.height-y-1+self.offsetY) * self.width + x + self.offsetX] = newValue
+        
+        

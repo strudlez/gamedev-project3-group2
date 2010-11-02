@@ -1,6 +1,7 @@
 from pandac.PandaModules import * #basic Panda modules
 from pandac.PandaModules import *
 from Globals import *
+import Globals
 from LevelWalker import LevelWalker,Location
 import math
 
@@ -27,6 +28,7 @@ class LineMember():
         self.node.setPos(self.pos)
         self.node.setH(self.angle)
         actor.instanceTo(self.node)
+    #Removes nodepath of member and unsets its position in grid
     def delete(self):
         self.node.removeNode()
         self.levelWalker.unset()
@@ -36,15 +38,16 @@ class LineMember():
     def moveFront(self,angle):
         ret=0
         self.angle=angle
-        if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
+        #if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
+        if Globals.CONGASPEED:
             self.setGrid()
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
             col=self.levelWalker.walk(dir)
             #print self.gridX,self.gridY,self.levelWalker._location.x,self.levelWalker._location.y
             if col:
-                colX,colY=col
+                colX,colY,colType=col
                 #print "OH MY GOD, YOU JUST KILLED A PANDA",colX,colY
-                ret=1
+                ret=colType
                 
         self.moveTo()
         return ret
@@ -84,7 +87,8 @@ class LineMember():
         
         
         angle = math.radians(self.angle)
-        dx = CONGASPEED * math.sin(angle)
-        dy = CONGASPEED * -math.cos(angle)
+        dx = Globals.CONGASPEED * math.sin(angle)
+        dy = Globals.CONGASPEED * -math.cos(angle)
         
         self.node.setPos(self.node.getX() + dx, self.node.getY() + dy, 0)
+        Globals.CONGASPEED=0
