@@ -55,6 +55,12 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.env.setScale(2)
         self.env.setPos(-2, -2, 0)
         self.env.setP(270)
+        self.bed = loader.loadModel("models/bedroom")
+        self.bed.reparentTo(render)
+        self.bed.setScale(2)
+        self.bed.setPos(-16, 2, 0)
+        self.bed.setP(270)
+        self.bed.setH(180)
         # self.lamp = loader.loadModel("models/flamberge")
         # self.lamp.reparentTo(render)
         # self.lamp.setPos(18, 20, 0)
@@ -99,7 +105,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
     def setResolution(self):
         """Set the screen resolution"""
         wp = WindowProperties()
-        wp.setSize(1024, 768) # there will be more resolutions
+        #wp.setSize(1024, 768) # there will be more resolutions
         #wp.setFullscreen(True)
         base.win.requestProperties(wp)
     
