@@ -4,6 +4,7 @@ from pandac.PandaModules import * #basic Panda modules
 import math
 from Globals import *
 import Globals
+from direct.filter.CommonFilters import CommonFilters
 
 class Line:
     def __init__(self,parent):
@@ -43,6 +44,9 @@ class Line:
         self.cameraAngle=0
         self.cameraDist=20
         self.cameraCurrDist=20
+        
+        #self.filters = CommonFilters(base.win, base.cam)
+        #self.filters.setBloom(blend=(1,1,1,1), desat=-0.5, intensity=3.0, size=40)
     def addMember(self):
         back=None
         if len(self.members):
@@ -56,8 +60,11 @@ class Line:
                 self.cameraDist+=1
                 self.cameraDown-=2
     def hitMember(self,x,y):
+        x=self.members[0].levelWalker._location.x
+        y=self.members[0].levelWalker._location.y
         for i in range(1,len(self.members)):
-            if self.members[i].gridX==x and self.members[i].gridY==y:
+            #if self.members[i].gridX==x and self.members[i].gridY==y:
+            if self.members[i].levelWalker._location.x==x and self.members[i].levelWalker._location.y==y:
                 for j in range(i,len(self.members)):
                     self.members[i].delete()
                     self.members.pop(i)
@@ -71,7 +78,7 @@ class Line:
         top=self.members[0]
         #if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
         if keymap["left"] and (self.angle-self.cameraAngle)%360!=270:
-            Globals.CONGASPEED = TILESIZE
+            if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
             self.angleTo=90+self.cameraAngle
             #print (self.angle+self.cameraAngle)%360
             
@@ -79,23 +86,23 @@ class Line:
             keymap["left"]=0
         #elif keymap["right"] and (self.angle-self.cameraAngle)%180!=90:
         elif keymap["right"] and (self.angle-self.cameraAngle)%360!=90:
-            Globals.CONGASPEED = TILESIZE
+            if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
             self.angleTo=270+self.cameraAngle
             self.turn='r'
             keymap["right"]=0
         #elif keymap["forward"] and (self.angle-self.cameraAngle)%180!=0:
         elif keymap["forward"] and (self.angle-self.cameraAngle)%360!=180:
-            Globals.CONGASPEED = TILESIZE
+            if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
             self.angleTo=0+self.cameraAngle
             keymap["forward"]=0
         #elif keymap["backwards"] and (self.angle-self.cameraAngle)%180!=0:
         elif keymap["backwards"] and (self.angle-self.cameraAngle)%360!=0:
-            Globals.CONGASPEED = TILESIZE
+            if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
             self.angleTo=180+self.cameraAngle
             keymap["backwards"]=0
         self.angleTo=self.angleTo%360
-        #if self.canTurn and not round(top.node.getY(),2)%TILESIZE and not round(top.node.getX(),2)%TILESIZE:
-        if Globals.CONGASPEED!=0:
+        if self.canTurn and not round(top.node.getY(),2)%TILESIZE and not round(top.node.getX(),2)%TILESIZE:
+        #if Globals.CONGASPEED!=0:
                 self.angle=self.angleTo
                 self.canTurn=0
         if not self.longLine and (self.cameraAngle-self.angle)%360==180:
@@ -105,12 +112,18 @@ class Line:
             #print camera.getH(),self.cameraDiff,self.lastAngle
         else:
             self.canTurn=1
+        
+        congaspeed=Globals.CONGASPEED
         ret=top.moveFront(self.angle)
-        #for i in range(1,len(self.members)):
-            #self.members[i].move(self.members[i-1])
+        if len(self.members)>1:
+            for i in range(1,len(self.members)):
+                if COLLIDE_DEBUG:Globals.CONGASPEED=congaspeed
+                self.members[i].move(self.members[i-1])
+        for i in self.members:
+            pass#print i.levelWalker._location.x,i.levelWalker._location.y
         if ret==1:
             pass
-            #print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
+            print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
             self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
         elif ret==2:
             pass

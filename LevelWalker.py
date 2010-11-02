@@ -1,4 +1,5 @@
 import string
+from Globals import *
 
 class LevelWalker(object):
     def __init__(self, level, location, grid='floor1'):
@@ -36,7 +37,6 @@ class LevelWalker(object):
         # walk forward one unit at a time
         
         for a in xrange(0, units):
-            print self._location.x,self._location.y
             col=self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)
             #self._location.x += dx
             #self._location.y += dy
@@ -54,13 +54,12 @@ class LevelWalker(object):
             self._location.y += dy
             #self._level._grids[self._grid].setCell(int(round(self._location.x,2)),int(round(self._location.y,2)),1)
             self.set()
-            self._level._grids[self._grid].printGrid()
+            if COLLIDE_DEBUG:self._level._grids[self._grid].printGrid()
             # TODO IMPLEMENT WARPS
             # if self._level._warps(LevelLocation)
         
         # all done!
-        print 'aaaaaaaaa'
-        return None
+        return ret
 class Location:
     def __init__(self,x,y):
         self.x=x

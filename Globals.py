@@ -8,6 +8,7 @@ CONGASPEED=0.1
 TURNSPEED=12
 TILESIZE=2
 SCALE=1
+COLLIDE_DEBUG=0
 
 def turnAngle(angle,angleTo,amt):
     if abs(angle-360-angleTo)<abs(angle-angleTo):angle-=360

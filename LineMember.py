@@ -21,8 +21,10 @@ class LineMember():
         
         self.gridX=int(round(self.pos.getX()/TILESIZE,2))
         self.gridY=int(round(self.pos.getY()/TILESIZE,2))
-        
-        self.levelWalker=LevelWalker(self.parent.parent.level,Location(self.gridX,self.gridY))
+        gridX=self.gridX
+        if front:
+            gridX+=1
+        self.levelWalker=LevelWalker(self.parent.parent.level,Location(gridX,self.gridY))
         
         self.node=render.attachNewNode("LineMember%d" % number)
         self.node.setPos(self.pos)
@@ -38,11 +40,12 @@ class LineMember():
     def moveFront(self,angle):
         ret=0
         self.angle=angle
-        #if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
-        if Globals.CONGASPEED:
+        if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
+        #if Globals.CONGASPEED:
             self.setGrid()
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
             col=self.levelWalker.walk(dir)
+            
             #print self.gridX,self.gridY,self.levelWalker._location.x,self.levelWalker._location.y
             if col:
                 colX,colY,colType=col
@@ -50,6 +53,7 @@ class LineMember():
                 ret=colType
                 
         self.moveTo()
+        #print self.gridX,self.gridY,self.levelWalker._location.x,self.levelWalker._location.y
         return ret
     def move(self,front):
         if not self.canMove:
@@ -57,6 +61,7 @@ class LineMember():
                 self.canMove=1
         if self.canMove:
             if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
+            #if Globals.CONGASPEED:
                 self.setGrid()
                 if front.gridX!=self.gridX:
                     self.angle=270 if front.gridX<self.gridX else 90
@@ -91,4 +96,5 @@ class LineMember():
         dy = Globals.CONGASPEED * -math.cos(angle)
         
         self.node.setPos(self.node.getX() + dx, self.node.getY() + dy, 0)
-        Globals.CONGASPEED=0
+        if COLLIDE_DEBUG:
+            Globals.CONGASPEED=0

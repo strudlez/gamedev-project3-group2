@@ -24,11 +24,6 @@ class LevelGrid(object):
         self.grid = array.array('H', [0]*width*height)
         for i in range(len(self.grid)):
             self.grid[i]=col[i]
-        for y in range(height):
-            s=''
-            for x in range(width):
-                s+='%d' % self.grid[y * self.width + x]
-            print s
     
     def printGrid(self):
         print '-'*self.width
