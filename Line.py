@@ -86,6 +86,7 @@ class Line:
         else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
 
     def hitPartier(self,x,y):
+        self.parent.sc+=200
         print 'hit partier'
         temp = LevelWalker(Globals.currentLevel, LevelLocation(self.members[0].levelWalker._location.grid,x,y), set = False)
         # scan the partiers list for nearest partier
@@ -103,6 +104,7 @@ class Line:
             #if self.members[i].gridX==x and self.members[i].gridY==y:
             if self.members[i].levelWalker._location.x==x and self.members[i].levelWalker._location.y==y:
                 for j in range(i,len(self.members)):
+                    self.parent.sc-=50
                     self.parent.leaving.append(LineLeaver(self.members[i].actor,self.members[i].node.getPos(),(self.members[i].angle+180)%360,len(self.parent.leaving)))
                     self.members[i].delete()
                     self.members.pop(i)
@@ -113,7 +115,7 @@ class Line:
         else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
         
     def hitWall(self):
-        
+        self.parent.sc-=200
         self.members.reverse()
         num=int(math.ceil(len(self.members)/4.0))
         if not self.congaDash:
@@ -156,6 +158,7 @@ class Line:
         else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
 
     def hitDoor(self):
+        self.parent.sc+=500
         if self.congaDash:
             doors=self.parent.doors
             door=None
@@ -185,6 +188,9 @@ class Line:
         top=self.members[0]
         self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
         self.parent.timer.setText("Timer: %i"%self.parent.time)
+        if(self.parent.sc<0):
+            self.parent.sc=0
+        self.parent.score.setText("Score: %i"%self.parent.sc)
         if self.congaDash and abs(self.dashX-top.levelWalker._location.x)+abs(self.dashY-top.levelWalker._location.y)>=8:
                 self.stopDash()
         if(self.parent.time!=0):
