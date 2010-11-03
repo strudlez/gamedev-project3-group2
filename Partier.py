@@ -7,6 +7,7 @@ from direct.actor.Actor import Actor
 import Globals
 import LevelConstants
 from LevelWalker import LevelWalker
+from LineLeaver import LineLeaver
 
 class Partier(object):
 
@@ -128,6 +129,8 @@ class Partier(object):
 
 
     def destroy(self):
+        actor=Globals.WALKERS[Globals.COLORS.index(self.color)]
+        Globals.LEAVING.append(LineLeaver(actor,self._actor.getPos(),self._actor.getH(),len(Globals.LEAVING),speed=0))
         taskMgr.remove(self._updateTask)
         Partier.all.remove(self)
         for i in [self._nextWalker, self._walker]:

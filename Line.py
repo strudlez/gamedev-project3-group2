@@ -42,8 +42,8 @@ class Line:
         self.playerActor=Actor("models/player", {"walk": "models/conga"})
         self.playerActor.loop("walk")
         colors=['white','yellow','black','purple','blue','red']
-        self.colors=['yellow','purple','blue','red']
-        self.walkers=[]
+        Globals.COLORS=self.colors=['yellow','purple','blue','red']
+        Globals.WALKERS=self.walkers=[]
         for i in self.colors:
             self.walkers.append(Actor("models/%s" %i , {"walk": "models/conga"}))
             self.walkers[-1].loop("walk")

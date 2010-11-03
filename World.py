@@ -63,7 +63,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         Globals.currentLevel = self.level
         
         self.line=Line(self)
-        self.leaving=[]
+        self.leaving=Globals.LEAVING
 
         partierTest = Partier(LevelLocation('floor1', 2, 2))
         

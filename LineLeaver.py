@@ -5,7 +5,7 @@ import Globals
 import math
 
 class LineLeaver():
-    def __init__(self,actor,pos,angle,number):
+    def __init__(self,actor,pos,angle,number,speed=1):
         self.dead=0
         self.frame=0
         self.deadOn=45
@@ -18,9 +18,11 @@ class LineLeaver():
         self.node.setH(self.angle)
         
         actor.instanceTo(self.node)
-        self.dx = Globals.CONGASTEP * math.sin(angle)
-        self.dy = Globals.CONGASTEP * -math.cos(angle)
+        self.dx = Globals.CONGASTEP * math.sin(angle) * speed
+        self.dy = Globals.CONGASTEP * -math.cos(angle) * speed
         self.node.setTransparency(TransparencyAttrib.MAlpha)
+        self.speed=speed
+        
         
     
     def delete(self):
