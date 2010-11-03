@@ -15,13 +15,9 @@ from LevelWalker import LevelWalker
 class World(DirectObject):  #Subclassing here is necessary to accept events
 
     def __init__(self):
-        base.disableMouse()                     #Turn off mouse control, otherwise camera is not repositional
-        render.setShaderAuto()
         self.loadModels()
-        self.setResolution()
         self.setLights()
         self.loadEnvironment()
-        self.setResolution()
         self.setupCollisions()
         camera.setPosHpr(0, 15, 7, 0, 15, 0)
         self.isMoving = False
@@ -108,19 +104,11 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
     def loadModels(self):
         """Loads models into the world"""
         
-    
     def setKey(self, key, value):
         self.keymap[key] = value
 
     def setupCollisions(self):
         """Sets up panda and smiley collision system"""
-    
-    def setResolution(self):
-        """Set the screen resolution"""
-        wp = WindowProperties()
-        #wp.setSize(1024, 768) # there will be more resolutions
-        #wp.setFullscreen(True)
-        base.win.requestProperties(wp)
     
     def move(self, task): #all methods added to taskMgr get passed task info
         
@@ -129,7 +117,3 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.line.move(elapsed,self.keymap)
         self.prevtime = task.time
         return Task.cont
-
-    
-w = World()
-run()

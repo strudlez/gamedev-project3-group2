@@ -1,1 +1,4 @@
-from World import World
+from MasterControl import MasterControl
+
+m = MasterControl()
+run()
