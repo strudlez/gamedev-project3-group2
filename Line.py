@@ -203,11 +203,16 @@ class Line:
             self.parent.timer.setText("Timer: %i"%self.parent.time)
             if(self.parent.sc<0):
                 self.parent.sc=0
+            if(self.parent.spawner%300==0):
+                num=random.randint(0,7)
+                self.parent.spawner=1
+                newpartier=Partier(LevelLocation('floor1', self.parent.spawns[num*2], self.parent.spawns[(num*2)+1]))
             self.parent.score.setText("Score: %i"%self.parent.sc)
             if self.congaDash and abs(self.dashX-top.levelWalker._location.x)+abs(self.dashY-top.levelWalker._location.y)>=8:
                     self.stopDash()
             if(self.parent.time!=0):
                 self.parent.time-=.02
+                self.parent.spawner+=1
             if(self.parent.cong>=300):
                 self.parent.dash.setText("(Space to Dash)")
             if(self.parent.cong<300):

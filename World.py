@@ -46,6 +46,8 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.cong= 1
         self.time=200
         self.sc=0
+        self.spawner=0
+        self.dead=0
 
         self.CP = OnscreenText(text = "ConGo Power: ", pos = (-1, .8), scale = 0.07, fg=(1,1,1,1))
         self.dash = OnscreenText(text = "", pos = (-1, .6), scale = 0.07, fg=(1,1,1,1))
@@ -64,9 +66,16 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         self.line=Line(self)
         self.leaving=Globals.LEAVING
+        self.spawns=[2,2,-10,5,15,5,20,5,15,-15,20,-18,2,10,-5,12]
 
         partierTest = Partier(LevelLocation('floor1', 2, 2))
-        
+        partierTest = Partier(LevelLocation('floor1', -10, 5))
+        partierTest = Partier(LevelLocation('floor1', 15, 5))
+        partierTest = Partier(LevelLocation('floor1', 20, 5))
+        partierTest = Partier(LevelLocation('floor1', 15, -15))
+        partierTest = Partier(LevelLocation('floor1', 20, -18))
+        partierTest = Partier(LevelLocation('floor1', 2, 10))
+        partierTest = Partier(LevelLocation('floor1', -5, 12))
 
     def loadEnvironment(self):
         """Loads the environment model into the world"""
