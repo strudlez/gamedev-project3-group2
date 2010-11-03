@@ -3,6 +3,7 @@ from LineLeaver import LineLeaver
 from direct.actor.Actor import Actor #for animated models
 from pandac.PandaModules import * #basic Panda modules
 import math
+import random
 from Globals import *
 import Globals
 from direct.filter.CommonFilters import CommonFilters
@@ -15,7 +16,7 @@ class Line:
         
         self.cameraDiff=180
         self.cameraAngle=180
-        self.cameraDist=30
+        self.cameraDist=20
         self.cameraCurrDist=self.cameraDist
         self.cameraDown=-20
         camera.setH(0)
@@ -29,9 +30,16 @@ class Line:
         
         
         self.pos=[]
-        self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
+        #self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
+        self.playerActor=Actor("models/player", {"walk": "models/conga"})
+        self.playerActor.loop("walk")
+        colors=['white','yellow','black','purple','blue','red']
+        self.walkers=[]
+        for i in colors:
+            self.walkers.append(Actor("models/%s" %i , {"walk": "models/conga"}))
+            self.walkers[-1].loop("walk")
         #self.actor.setControlEffect("eat", 1)
-        self.actor.setScale(.0025)
+        #self.actor.setScale(.0025)
         #self.actor.setH(self.angle)
         #self.actor.reparentTo(render)
         self.longLine=1
@@ -53,16 +61,20 @@ class Line:
         back=None
         if len(self.members):
             back=self.members[-1]
-        member=LineMember(self,self.actor,back,len(self.members)+1)
+        actor=self.walkers[random.randint(0,len(self.walkers)-1)]
+        if len(self.members)==0:
+            actor=self.playerActor
+        member=LineMember(self,actor,back,len(self.members)+1)
         self.members.append(member)
         for i in self.members:
             i.levelWalker.set()
         if not self.longLine:
-            if len(self.members)>=30:
+            if self.cameraDown<=-90:
                 self.longLine=1
+                self.cameraDown=-90
             else:
-                self.cameraDist+=1
-                self.cameraDown-=2
+                self.cameraDist+=Globals.CAMERA_MOVE
+                self.cameraDown-=Globals.CAMERA_MOVE_ANGLE
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
         
     def hitMember(self,x,y):
@@ -72,7 +84,7 @@ class Line:
             #if self.members[i].gridX==x and self.members[i].gridY==y:
             if self.members[i].levelWalker._location.x==x and self.members[i].levelWalker._location.y==y:
                 for j in range(i,len(self.members)):
-                    self.parent.leaving.append(LineLeaver(self.actor,self.members[i].node.getPos(),self.members[i].angle,len(self.parent.leaving)))
+                    self.parent.leaving.append(LineLeaver(self.members[i].actor,self.members[i].node.getPos(),(self.members[i].angle+180)%360,len(self.parent.leaving)))
                     self.members[i].delete()
                     self.members.pop(i)
                 break
@@ -80,12 +92,15 @@ class Line:
             self.members[0].levelWalker.set()
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
     def hitWall(self):
+        
         self.members.reverse()
-        for i in range(0,2):
+        num=math.ceil(len(self.members)/4.0)
+        for i in range(0,num):
+            self.parent.leaving.append(LineLeaver(self.members[-1].actor,self.members[-1].node.getPos(),self.members[-1].angle+random.randint(-45,45),len(self.parent.leaving)))
             if(len(self.members)<=1):
                 break
-            self.members[len(self.members)-1].delete()
-            self.members.pop(len(self.members)-1)
+            self.members[-1].delete()
+            self.members.pop(-1)
         for i in self.members:
             #i.node.setH((self.members[0].angle+180)%360)
             #i.angle=(i.angle+180)%360
@@ -95,6 +110,16 @@ class Line:
             dir={0:'U',180:'D',270:'L',90:'R'}[i.angle]
             i.levelWalker.walk(dir)
         self.angleTo=self.angle=self.members[0].angle
+        self.members[0].actor=self.playerActor
+        self.members[0].node.getChildren().clear()
+        pos=self.members[0].node.getPos()
+        hpr=self.members[0].node.getHpr()
+        self.members[0].node.removeNode()
+        self.members[0].node=render.attachNewNode("LineMember%d" % self.members[0].number)
+        self.members[0].node.setPos(pos)
+        self.members[0].node.setHpr(hpr)
+        self.playerActor.instanceTo(self.members[0].node)
+        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
     def move(self,elapsed,keymap):
         if keymap["add"]:
             keymap["add"]=0

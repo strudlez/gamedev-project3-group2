@@ -11,11 +11,15 @@ class LineLeaver():
         self.deadOn=45
         
         self.node=render.attachNewNode("LineLeaver%d" % number)
+        self.node.setLightOff()
+        self.node.setShaderOff()
         self.node.setPos(pos)
-        self.angle=(angle+180)%360
+        self.angle=angle
         self.node.setH(self.angle)
+        
         actor.instanceTo(self.node)
-        self.dx, self.dy = {0:(0, -Globals.CONGASTEP), 180:(0, Globals.CONGASTEP), 270:(-Globals.CONGASTEP, 0), 90:(Globals.CONGASTEP, 0)}[self.angle]
+        self.dx = Globals.CONGASTEP * math.sin(angle)
+        self.dy = Globals.CONGASTEP * -math.cos(angle)
         
     
     def delete(self):
@@ -24,7 +28,7 @@ class LineLeaver():
     def move(self):
         self.frame+=1
         
-        self.node.setPos(self.node.getX() + self.dx, self.node.getY() + self.dy, 0)
+        self.node.setPos(self.node.getX() + self.dx, self.node.getY() + self.dy, self.node.getZ())
         if self.frame==self.deadOn:self.dead=1
         color=1-float(self.frame)/self.deadOn
         self.node.setColorScale(color,color,color,color)

@@ -16,6 +16,7 @@ class LineMember():
             self.angle=front.angle
             self.pos.setX(front.gridX*TILESIZE)
             self.pos.setY(front.gridY*TILESIZE)
+            
         
         self.canMove=0
         if not front:
@@ -38,9 +39,12 @@ class LineMember():
             self.levelWalker.walk(dir,units=-1)
         
         self.node=render.attachNewNode("LineMember%d" % number)
+        self.pos.setZ(-0.2)
         self.node.setPos(self.pos)
         self.node.setH(self.angle)
+        
         actor.instanceTo(self.node)
+        self.actor=actor
         self.number=number
     #Removes nodepath of member and unsets its position in grid
     def delete(self):
@@ -112,6 +116,6 @@ class LineMember():
         #dy = Globals.CONGASTEP * -math.cos(angle)
         dx, dy = {0:(0, -Globals.CONGASTEP), 180:(0, Globals.CONGASTEP), 270:(-Globals.CONGASTEP, 0), 90:(Globals.CONGASTEP, 0)}[self.angle]
         
-        self.node.setPos(self.node.getX() + dx, self.node.getY() + dy, 0)
+        self.node.setPos(self.node.getX() + dx, self.node.getY() + dy, self.node.getZ())
         if COLLIDE_DEBUG:
             Globals.CONGASPEED=0
