@@ -1,10 +1,10 @@
 <CoordinateSystem> { Z-Up }
 
 <Comment> {
-  "maya2egg2011 -cs z-up -a model -cn guest -o player.egg guests/conga.mb"
+  "maya2egg2011 -cs z-up -a model -cn guest -o yellow.egg guests/yellow.mb"
 }
 <Texture> phong1SG {
-  "../textures/camper_green.png"
+  "../textures/camper_yellow.png"
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }
