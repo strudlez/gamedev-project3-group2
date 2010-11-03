@@ -11,7 +11,7 @@ class PictureAnimation(DirectObject):
 
         self.pics = []
         for pic in picList:
-            a = OnscreenImage(image = pic, parent = self._rootNode)
+            a = OnscreenImage(image = pic, parent = self._rootNode, scale=(1.335,1,1))
             a.setTransparency(TransparencyAttrib.MAlpha)
             a.hide()
             self.pics.append(a)
