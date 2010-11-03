@@ -11,6 +11,7 @@ from Globals import *
 from Line import Line
 from Level import Level,LevelGrid
 from LevelWalker import LevelWalker
+from Door import Door
 
 class World(DirectObject):  #Subclassing here is necessary to accept events
 
@@ -52,19 +53,14 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.env.setScale(2)
         self.env.setPos(0, 0, 0)
         self.env.setP(270)
-        self.door1 = loader.loadModel("models/door")
-        self.door1.reparentTo(render)
-        self.door1.setScale(1.5)
-        self.door1.setPos(38, -12, 0)
-        self.door2 = loader.loadModel("models/door")
-        self.door2.reparentTo(render)
-        self.door2.setScale(1.5)
-        self.door2.setPos(20, -6, 0)
-        self.door2.setH(90)
-        self.door3 = loader.loadModel("models/door")
-        self.door3.reparentTo(render)
-        self.door3.setScale(1.5)
-        self.door3.setPos(4, 18, 0)
+        
+        
+        self.doorModel=loader.loadModel("models/door")
+        self.doors=[]
+        self.doors.append(Door(self.doorModel,1,38,-12,0))
+        self.doors.append(Door(self.doorModel,2,20,-6,90))
+        self.doors.append(Door(self.doorModel,3,4,18,0))
+        
         # self.bed = loader.loadModel("models/bedroom")
         # self.bed.reparentTo(render)
         # self.bed.setScale(2)
@@ -122,5 +118,10 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
             if self.leaving[i].dead:
                 self.leaving[i].delete()
                 self.leaving.pop(i)
+        for i in range(len(self.doors)-1,-1,-1):
+            self.doors[i].move()
+            if self.doors[i].dead:
+                self.doors[i].delete()
+                self.doors.pop(i)
         self.prevtime = task.time
         return Task.cont

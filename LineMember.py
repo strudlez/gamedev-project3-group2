@@ -42,7 +42,7 @@ class LineMember():
         self.pos.setZ(-0.2)
         self.node.setPos(self.pos)
         self.node.setH(self.angle)
-        
+        self.node.setShaderOff()
         actor.instanceTo(self.node)
         self.actor=actor
         self.number=number

@@ -44,7 +44,7 @@ class LevelWalker(object):
             if col:
                 #ret=int(round(self._location.x+dx,2)),int(round(self._location.y+dy,2)),self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)
                 ret=int(round(self._location.x,2)),int(round(self._location.y,2)),self._level._grids[self._grid].getCell(self._location.x,self._location.y)
-            if col>1:
+            elif col>1:
                 self.unset()
                 self._location.x += dx
                 self._location.y += dy

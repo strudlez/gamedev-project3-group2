@@ -11,7 +11,7 @@ class LineLeaver():
         self.deadOn=45
         
         self.node=render.attachNewNode("LineLeaver%d" % number)
-        self.node.setLightOff()
+        #self.node.setLightOff()
         self.node.setShaderOff()
         self.node.setPos(pos)
         self.angle=angle
