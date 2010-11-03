@@ -17,11 +17,11 @@ class Line:
         self.angleTo=90
         
         self.cameraDiff=180
-        self.cameraAngle=180
-        self.cameraDist=20
+        self.cameraAngle=0
+        self.cameraDist=70
         self.cameraCurrDist=self.cameraDist
-        self.cameraDown=-20
-        camera.setH(0)
+        self.cameraDown=-70
+        camera.setH((self.cameraAngle+self.cameraDiff)%360)
         camera.setP(self.cameraDown)
         self.turn='r'
         self.canTurn=0
@@ -30,7 +30,10 @@ class Line:
         self.topX=0
         self.topY=0
         
-        self.congaDash=1
+        self.dashX=0
+        self.dashY=0
+        
+        self.congaDash=0
         
         self.pos=[]
         #self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
@@ -44,17 +47,18 @@ class Line:
             self.walkers[-1].loop("walk")
         
         self.longLine=1
+        self.staticCam=1
         for i in range(1):
             self.addMember()
         self.longLine=0
         
-        self.longLine=1
-        self.cameraDown=-90
-        camera.setP(-90)
-        camera.setH(90)
-        self.cameraAngle=0
-        self.cameraDist=100
-        self.cameraCurrDist=self.cameraDist
+        #~ self.longLine=1
+        #~ self.cameraDown=-90
+        #~ camera.setP(-90)
+        #~ camera.setH(90)
+        #~ self.cameraAngle=0
+        #~ self.cameraDist=100
+        #~ self.cameraCurrDist=self.cameraDist
         
     def addMember(self):
         back=None
@@ -68,13 +72,16 @@ class Line:
         for i in self.members:
             i.levelWalker.set()
         if not self.longLine:
-            if self.cameraDown<=-90:
+            if self.cameraDown<=-40:
+                self.staticCam=1
+            if self.cameraDown<=-75:
                 self.longLine=1
-                self.cameraDown=-90
+                self.cameraDown=-75
             else:
                 self.cameraDist+=Globals.CAMERA_MOVE
                 self.cameraDown-=Globals.CAMERA_MOVE_ANGLE
-        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
+        if self.congaDash: Globals.CONGASPEED=0.8
+        else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
 
     def hitPartier(self):
         print 'hit partier'
@@ -99,18 +106,31 @@ class Line:
                 break
         for i in self.members:
             self.members[0].levelWalker.set()
-        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
+        if self.congaDash: Globals.CONGASPEED=0.8
+        else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
         
     def hitWall(self):
         
         self.members.reverse()
         num=math.ceil(len(self.members)/4.0)
-        for i in range(0,num):
-            self.parent.leaving.append(LineLeaver(self.members[-1].actor,self.members[-1].node.getPos(),self.members[-1].angle+random.randint(-45,45),len(self.parent.leaving)))
-            if(len(self.members)<=1):
-                break
-            self.members[-1].delete()
-            self.members.pop(-1)
+        if not self.congaDash:
+            for i in range(0,num):
+                self.parent.leaving.append(LineLeaver(self.members[-1].actor,self.members[-1].node.getPos(),self.members[-1].angle+random.randint(-45,45),len(self.parent.leaving)))
+                if(len(self.members)<=1):
+                    break
+                self.members[-1].delete()
+                self.members.pop(-1)
+        else:
+            self.members[-1].actor=self.playerActor
+            self.members[-1].node.getChildren().clear()
+            pos=self.members[-1].node.getPos()
+            hpr=self.members[-1].node.getHpr()
+            self.members[-1].node.removeNode()
+            self.members[-1].node=render.attachNewNode("LineMember%d" % self.members[0].number)
+            self.members[-1].node.setPos(pos)
+            self.members[-1].node.setHpr(hpr)
+            self.walkers[random.randint(0,len(self.walkers)-1)].instanceTo(self.members[-1].node)
+            self.stopDash()
         for i in self.members:
             #i.node.setH((self.members[0].angle+180)%360)
             #i.angle=(i.angle+180)%360
@@ -129,7 +149,8 @@ class Line:
         self.members[0].node.setPos(pos)
         self.members[0].node.setHpr(hpr)
         self.playerActor.instanceTo(self.members[0].node)
-        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
+        if self.congaDash: Globals.CONGASPEED=0.8
+        else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
 
     def hitDoor(self):
         if self.congaDash:
@@ -139,23 +160,41 @@ class Line:
             top=self.members[0]
             for i in doors:
                 d=math.sqrt((top.node.getX()-i.node.getX())**2 + (top.node.getY()-i.node.getY())**2)
+                
                 if dist==-1 or d<dist:
                     dist=d
                     door=i
             dir=1
-            
+            x,y=top.levelWalker._location.x,top.levelWalker._location.y
+            for x,y in ((x,y),(x+1,y),(x-1,y),(x,y+1),(x,y-1),(x+1,y+1),(x+1,y-1),(x-1,y+1),(x-1,y-1)):
+                if self.parent.level._grids[top.levelWalker._location.grid].getCell(x, y)==4:
+                    self.parent.level._grids[top.levelWalker._location.grid].setCell(x, y,0)
+            top.levelWalker.set()
             if top.angle!=door.node.getH():dir=-1
             door.fall(dir)
             
         else: self.hitWall()
+    def stopDash(self):
+        self.congaDash=0
+        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
 
     def move(self,elapsed,keymap):
+        top=self.members[0]
         self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
         self.parent.timer.setText("Timer: %i"%self.parent.time)
+        if self.congaDash and abs(self.dashX-top.levelWalker._location.x)+abs(self.dashY-top.levelWalker._location.y)>=8:
+                self.stopDash()
         if(self.parent.time!=0):
             self.parent.time-=.02
         if(self.parent.cong<300):
-            self.parent.cong+=.2
+            self.parent.cong+=.2+.1*len(self.members)
+        elif keymap['dash']:
+            self.parent.cong=0
+            keymap['dash']=0
+            Globals.CONGASPEED=0.8
+            self.congaDash=1
+            self.dashX=top.levelWalker._location.x
+            self.dashY=top.levelWalker._location.y
         self.parent.length.setText("Length: %i"%len(self.members))
         self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
         if(self.parent.max < len(self.members)):
@@ -164,7 +203,7 @@ class Line:
         if keymap["add"]:
             keymap["add"]=0
             self.addMember()
-        top=self.members[0]
+        
         #if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
         for i in range(int(Globals.CONGASPEED/Globals.CONGASTEP)):
             if keymap["left"] and (self.angle-self.cameraAngle)%360!=270:
@@ -199,7 +238,7 @@ class Line:
                     self.topY=gridY
                     self.angle=self.angleTo
                     self.canTurn=0
-            if not self.longLine and (self.cameraAngle-self.angle)%360==180:
+            if not self.staticCam and (self.cameraAngle-self.angle)%360==180:
                 self.cameraAngle=(self.cameraAngle+(90 if self.turn=='l' else -90))%360
                 self.cameraDiff=180 if self.turn=='l' else -180
             
@@ -213,21 +252,17 @@ class Line:
                 for i in range(1,len(self.members)):
                     if COLLIDE_DEBUG:Globals.CONGASPEED=congaspeed
                     self.members[i].move(self.members[i-1])
+            
             if ret==LevelConstants.LINE_WALKER:
-                pass
-                #print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
                 self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
             elif ret==LevelConstants.WALL or ret==LevelConstants.FURNITURE:
                 self.hitWall()
                 top=self.members[0]
                 break
-                #print "WALL",top.levelWalker._location.x,top.levelWalker._location.y
             elif ret==LevelConstants.DOOR:
                 self.hitDoor()
                 top=self.members[0]
-                #top=self.members[0]
                 break
-                #print "COUCH",top.levelWalker._location.x,top.levelWalker._location.y
             elif ret == LevelConstants.PARTIER:
                 self.hitPartier()
                 top = self.members[0]
@@ -235,12 +270,12 @@ class Line:
                 
         angleTo=self.cameraAngle+self.cameraDiff
         camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))
-        #camera.setP(-90)
+        
         camera.setP(moveInc(camera.getP(),self.cameraDown,0.07))
         camera.setPos(top.node.getPos())
-        self.cameraCurrDist=moveInc(self.cameraCurrDist,self.cameraDist,0.07)
-        #camera.setPos(camera,0,-30,0)
-        camera.setPos(camera,0,-self.cameraCurrDist,0)
-        #camera.setP(-90)
-        #camera.lookAt(self.actor)
-        #print camera.
+        curDist=self.cameraCurrDist=moveInc(self.cameraCurrDist,self.cameraDist,0.07)
+        x,y=top.levelWalker._location.x,top.levelWalker._location.y
+        
+        camera.setPos(camera,0,-curDist,0)
+        
+        

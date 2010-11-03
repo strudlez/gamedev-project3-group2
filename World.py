@@ -27,7 +27,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         camera.setPosHpr(0, 15, 7, 0, 15, 0)
         self.isMoving = False
         
-        self.keymap = {"left":0, "right":0, "forward":0, "backwards":0, "add":0}
+        self.keymap = {"left":0, "right":0, "forward":0, "backwards":0, "add":0, "dash":0}
         self.prevtime = 0
         taskMgr.add(self.move, "moveTask")
         
@@ -40,6 +40,8 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.accept("arrow_down", self.setKey, ["backwards", 1])
         self.accept("arrow_down-up", self.setKey,["backwards", 0])
         self.accept("a", self.setKey,["add", 1])
+        self.accept("space", self.setKey,["dash", 1])
+        self.accept("space-up", self.setKey,["dash", 0])
         self.max = 0
         self.cong= 1
         self.time=200

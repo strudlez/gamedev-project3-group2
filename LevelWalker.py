@@ -23,12 +23,12 @@ class LevelWalker(object):
     def setCell(self, newVal):
         self._level._grids[self._location.grid].setCell(self._location.x, self._location.y, newVal)
 
-    def unset(self):
-        if self.getCell()<=1:
+    def unset(self,force=0):
+        if force or self.getCell()<=1:
             self.setCell(LevelConstants.EMPTY)
             
-    def set(self):
-        if self.getCell()<=1:
+    def set(self,force=0):
+        if force or self.getCell()<=1:
             self.setCell(LevelConstants.LINE_WALKER)
     
     def walk(self, direction, units = 1):

@@ -13,8 +13,8 @@ TILESIZE=2
 SCALE=1
 COLLIDE_DEBUG=0
 
-CAMERA_MOVE=2
-CAMERA_MOVE_ANGLE=2
+CAMERA_MOVE=4
+CAMERA_MOVE_ANGLE=4
 
 def turnAngle(angle,angleTo,amt):
     if abs(angle-360-angleTo)<abs(angle-angleTo):angle-=360
