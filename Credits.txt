@@ -76,3 +76,10 @@ Wandering partier implementation
 environment/level grid and traversal system
 title menu
 splash screens
+
+===========================
+Cody Gallagher - programmer
+===========================
+HUD
+Enemy spawning
+Collision Mapping
