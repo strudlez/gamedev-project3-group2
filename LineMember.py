@@ -18,18 +18,32 @@ class LineMember():
             self.pos.setY(front.gridY*TILESIZE)
         
         self.canMove=0
-        
-        self.gridX=int(round(self.pos.getX()/TILESIZE,2))
-        self.gridY=int(round(self.pos.getY()/TILESIZE,2))
+        if not front:
+            self.gridX=int(round(self.pos.getX()/TILESIZE,2))
+            self.gridY=int(round(self.pos.getY()/TILESIZE,2))
+        else:
+            self.gridX=front.gridX
+            self.gridY=front.gridY
         gridX=self.gridX
-        if front:
+        gridY=self.gridY
+        if not front:
             gridX+=1
-        self.levelWalker=LevelWalker(self.parent.parent.level,Location(gridX,self.gridY))
+            #gridY-=1
+        if front:
+            gridX=front.levelWalker._location.x
+            gridY=front.levelWalker._location.y
+        self.levelWalker=LevelWalker(self.parent.parent.level,Location(gridX,gridY))
+        if front:
+            dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
+            self.levelWalker.walk(dir,units=-1)
+            #if number==2:
+                #self.levelWalker.walk(dir,units=1)
         
         self.node=render.attachNewNode("LineMember%d" % number)
         self.node.setPos(self.pos)
         self.node.setH(self.angle)
         actor.instanceTo(self.node)
+        self.number=number
     #Removes nodepath of member and unsets its position in grid
     def delete(self):
         self.node.removeNode()
@@ -41,6 +55,7 @@ class LineMember():
         ret=0
         self.angle=angle
         if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
+            
         #if Globals.CONGASPEED:
             self.setGrid()
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
@@ -51,6 +66,7 @@ class LineMember():
                 colX,colY,colType=col
                 #print "OH MY GOD, YOU JUST KILLED A PANDA",colX,colY
                 ret=colType
+            
                 
         self.moveTo()
         #print self.gridX,self.gridY,self.levelWalker._location.x,self.levelWalker._location.y

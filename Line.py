@@ -53,12 +53,15 @@ class Line:
             back=self.members[-1]
         member=LineMember(self,self.actor,back,len(self.members)+1)
         self.members.append(member)
+        for i in self.members:
+            i.levelWalker.set()
         if not self.longLine:
             if len(self.members)>=30:
                 self.longLine=1
             else:
                 self.cameraDist+=1
                 self.cameraDown-=2
+        
     def hitMember(self,x,y):
         x=self.members[0].levelWalker._location.x
         y=self.members[0].levelWalker._location.y
@@ -123,7 +126,7 @@ class Line:
             pass#print i.levelWalker._location.x,i.levelWalker._location.y
         if ret==1:
             pass
-            print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
+            #print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
             self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
         elif ret==2:
             pass
