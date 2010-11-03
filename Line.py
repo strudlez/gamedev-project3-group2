@@ -156,7 +156,7 @@ class Line:
         self.playerActor.instanceTo(self.members[0].node)
         if self.congaDash: Globals.CONGASPEED=0.8
         else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
-
+        Globals.CAMERA_PAUSE=30
     def hitDoor(self):
         self.parent.sc+=500
         if self.congaDash:
@@ -186,100 +186,103 @@ class Line:
 
     def move(self,elapsed,keymap):
         top=self.members[0]
-        self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
-        self.parent.timer.setText("Timer: %i"%self.parent.time)
-        if(self.parent.sc<0):
-            self.parent.sc=0
-        self.parent.score.setText("Score: %i"%self.parent.sc)
-        if self.congaDash and abs(self.dashX-top.levelWalker._location.x)+abs(self.dashY-top.levelWalker._location.y)>=8:
-                self.stopDash()
-        if(self.parent.time!=0):
-            self.parent.time-=.02
-        if(self.parent.cong>=300):
-            self.parent.dash.setText("(Space to Dash)")
-        if(self.parent.cong<300):
-            self.parent.cong+=.2+.1*len(self.members)
-        elif keymap['dash']:
-            self.parent.cong=0
-            keymap['dash']=0
-            Globals.CONGASPEED=0.8
-            self.congaDash=1
-            self.dashX=top.levelWalker._location.x
-            self.dashY=top.levelWalker._location.y
-            self.parent.dash.setText("")
-        self.parent.length.setText("Length: %i"%len(self.members))
-        self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
-        if(self.parent.max < len(self.members)):
-            self.parent.max = len(self.members)
-        self.parent.mlength.setText("Max Length: %i"%self.parent.max)
-        if keymap["add"]:
-            keymap["add"]=0
-            self.addMember()
-        
-        #if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
-        for i in range(int(Globals.CONGASPEED/Globals.CONGASTEP)):
-            if keymap["left"] and (self.angle-self.cameraAngle)%360!=270:
-                if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
-                self.angleTo=90+self.cameraAngle
-                #print (self.angle+self.cameraAngle)%360
+        if Globals.CAMERA_PAUSE:
+            Globals.CAMERA_PAUSE-=1
+        else:
+            self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
+            self.parent.timer.setText("Timer: %i"%self.parent.time)
+            if(self.parent.sc<0):
+                self.parent.sc=0
+            self.parent.score.setText("Score: %i"%self.parent.sc)
+            if self.congaDash and abs(self.dashX-top.levelWalker._location.x)+abs(self.dashY-top.levelWalker._location.y)>=8:
+                    self.stopDash()
+            if(self.parent.time!=0):
+                self.parent.time-=.02
+            if(self.parent.cong>=300):
+                self.parent.dash.setText("(Space to Dash)")
+            if(self.parent.cong<300):
+                self.parent.cong+=.2+.1*len(self.members)
+            elif keymap['dash']:
+                self.parent.cong=0
+                keymap['dash']=0
+                Globals.CONGASPEED=0.8
+                self.congaDash=1
+                self.dashX=top.levelWalker._location.x
+                self.dashY=top.levelWalker._location.y
+                self.parent.dash.setText("")
+            self.parent.length.setText("Length: %i"%len(self.members))
+            self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
+            if(self.parent.max < len(self.members)):
+                self.parent.max = len(self.members)
+            self.parent.mlength.setText("Max Length: %i"%self.parent.max)
+            if keymap["add"]:
+                keymap["add"]=0
+                self.addMember()
+            
+            #if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
+            for i in range(int(Globals.CONGASPEED/Globals.CONGASTEP)):
+                if keymap["left"] and (self.angle-self.cameraAngle)%360!=270:
+                    if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
+                    self.angleTo=90+self.cameraAngle
+                    #print (self.angle+self.cameraAngle)%360
+                    
+                    self.turn='l'
+                    keymap["left"]=0
+                #elif keymap["right"] and (self.angle-self.cameraAngle)%180!=90:
+                elif keymap["right"] and (self.angle-self.cameraAngle)%360!=90:
+                    if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
+                    self.angleTo=270+self.cameraAngle
+                    self.turn='r'
+                    keymap["right"]=0
+                #elif keymap["forward"] and (self.angle-self.cameraAngle)%180!=0:
+                elif keymap["forward"] and (self.angle-self.cameraAngle)%360!=180:
+                    if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
+                    self.angleTo=0+self.cameraAngle
+                    keymap["forward"]=0
+                #elif keymap["backwards"] and (self.angle-self.cameraAngle)%180!=0:
+                elif keymap["backwards"] and (self.angle-self.cameraAngle)%360!=0:
+                    if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
+                    self.angleTo=180+self.cameraAngle
+                    keymap["backwards"]=0
+                self.angleTo=self.angleTo%360
+                gridX=int(round(top.node.getX()/Globals.TILESIZE,2))
+                gridY=int(round(top.node.getY()/Globals.TILESIZE,2))
+                if self.canTurn and not round(top.node.getY(),2)%TILESIZE and not round(top.node.getX(),2)%TILESIZE:
                 
-                self.turn='l'
-                keymap["left"]=0
-            #elif keymap["right"] and (self.angle-self.cameraAngle)%180!=90:
-            elif keymap["right"] and (self.angle-self.cameraAngle)%360!=90:
-                if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
-                self.angleTo=270+self.cameraAngle
-                self.turn='r'
-                keymap["right"]=0
-            #elif keymap["forward"] and (self.angle-self.cameraAngle)%180!=0:
-            elif keymap["forward"] and (self.angle-self.cameraAngle)%360!=180:
-                if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
-                self.angleTo=0+self.cameraAngle
-                keymap["forward"]=0
-            #elif keymap["backwards"] and (self.angle-self.cameraAngle)%180!=0:
-            elif keymap["backwards"] and (self.angle-self.cameraAngle)%360!=0:
-                if COLLIDE_DEBUG:Globals.CONGASPEED = TILESIZE
-                self.angleTo=180+self.cameraAngle
-                keymap["backwards"]=0
-            self.angleTo=self.angleTo%360
-            gridX=int(round(top.node.getX()/Globals.TILESIZE,2))
-            gridY=int(round(top.node.getY()/Globals.TILESIZE,2))
-            if self.canTurn and not round(top.node.getY(),2)%TILESIZE and not round(top.node.getX(),2)%TILESIZE:
-            
-                    self.topX=gridX
-                    self.topY=gridY
-                    self.angle=self.angleTo
-                    self.canTurn=0
-            if not self.staticCam and (self.cameraAngle-self.angle)%360==180:
-                self.cameraAngle=(self.cameraAngle+(90 if self.turn=='l' else -90))%360
-                self.cameraDiff=180 if self.turn=='l' else -180
-            
-                #print camera.getH(),self.cameraDiff,self.lastAngle
-            else:
-                self.canTurn=1
-            
-            congaspeed=Globals.CONGASPEED
-            ret=top.moveFront(self.angle)
-            if len(self.members)>1:
-                for i in range(1,len(self.members)):
-                    if COLLIDE_DEBUG:Globals.CONGASPEED=congaspeed
-                    self.members[i].move(self.members[i-1])
-            if ret:
-                x,y,type=ret
-                if type==LevelConstants.LINE_WALKER:
-                    self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
-                elif type==LevelConstants.WALL or type==LevelConstants.FURNITURE:
-                    self.hitWall()
-                    top=self.members[0]
-                    break
-                elif type==LevelConstants.DOOR:
-                    self.hitDoor()
-                    top=self.members[0]
-                    break
-                elif type == LevelConstants.PARTIER:
-                    self.hitPartier(x,y)
-                    top = self.members[0]
-                    break
+                        self.topX=gridX
+                        self.topY=gridY
+                        self.angle=self.angleTo
+                        self.canTurn=0
+                if not self.staticCam and (self.cameraAngle-self.angle)%360==180:
+                    self.cameraAngle=(self.cameraAngle+(90 if self.turn=='l' else -90))%360
+                    self.cameraDiff=180 if self.turn=='l' else -180
+                
+                    #print camera.getH(),self.cameraDiff,self.lastAngle
+                else:
+                    self.canTurn=1
+                
+                congaspeed=Globals.CONGASPEED
+                ret=top.moveFront(self.angle)
+                if len(self.members)>1:
+                    for i in range(1,len(self.members)):
+                        if COLLIDE_DEBUG:Globals.CONGASPEED=congaspeed
+                        self.members[i].move(self.members[i-1])
+                if ret:
+                    x,y,type=ret
+                    if type==LevelConstants.LINE_WALKER:
+                        self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
+                    elif type==LevelConstants.WALL or type==LevelConstants.FURNITURE:
+                        self.hitWall()
+                        top=self.members[0]
+                        break
+                    elif type==LevelConstants.DOOR:
+                        self.hitDoor()
+                        top=self.members[0]
+                        break
+                    elif type == LevelConstants.PARTIER:
+                        self.hitPartier(x,y)
+                        top = self.members[0]
+                        break
                 
         angleTo=self.cameraAngle+self.cameraDiff
         camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))

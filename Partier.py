@@ -52,6 +52,10 @@ class Partier(object):
         dt = task.time - self._lastTime
         self._lastTime = task.time
         
+        if Globals.CAMERA_PAUSE:
+            if Globals.INIT:Globals.INIT=0
+            else:return task.cont
+        
         # how far we should walk this frame
         wanderDistance = 0 if self._dir == None else self.WANDER_SPEED * dt
         self._inbetweenAmount += wanderDistance
