@@ -90,7 +90,7 @@ class MasterControl(DirectObject):
         ], 5)
         s.play()
         self.max = OnscreenText(text = 'Score: %i'%Globals.SCORE, pos = (-.4, -.9), scale = 0.1, fg=(1,1,1,1))
-        self.score = OnscreenText(text = 'Max Length: %i'%Globals.MAX, pos = (-.4, -.9), scale = 0.1, fg=(1,1,1,1))
+        self.score = OnscreenText(text = 'Max Length: %i'%Globals.MAX, pos = (.4, -.9), scale = 0.1, fg=(1,1,1,1))
         while not s.isDone:
             yield
         s.destroy()
