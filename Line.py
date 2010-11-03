@@ -94,7 +94,7 @@ class Line:
         else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
 
     def hitPartier(self,x,y):
-        self.parent.sc+=200
+        self.parent.sc+=20*len(self.members)
         print 'hit partier'
         temp = LevelWalker(Globals.currentLevel, LevelLocation(self.members[0].levelWalker._location.grid,x,y), set = False)
         # scan the partiers list for nearest partier

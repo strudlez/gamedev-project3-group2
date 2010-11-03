@@ -44,7 +44,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.accept("space-up", self.setKey,["dash", 0])
         self.max = 0
         self.cong= 1
-        self.time=200
+        self.time=100
         self.sc=0
         self.spawner=0
         self.dead=0
