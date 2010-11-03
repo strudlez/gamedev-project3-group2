@@ -26,9 +26,9 @@ class PictureAnimation(DirectObject):
         self._updateTask = taskMgr.add(self.update, 'pictureAnimationTask')
 
     def update(self, task):
-        print 'updating'
+        #print 'updating'
         if task.time >= (self._index + 1) * self._period:
-            print 'time to switch'
+            #print 'time to switch'
             if self._index >= len(self.pics) - 1:
                 self.isDone = True
                 self._updateTask = None

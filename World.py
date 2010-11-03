@@ -27,6 +27,10 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         camera.setPosHpr(0, 15, 7, 0, 15, 0)
         self.isMoving = False
         
+        self.BGM = base.loader.loadSfx("sounds/tequila.ogg")
+        self.BGM.setLoop(True)
+        self.BGM.play()
+        
         self.keymap = {"left":0, "right":0, "forward":0, "backwards":0, "add":0, "dash":0}
         self.prevtime = 0
         taskMgr.add(self.move, "moveTask")

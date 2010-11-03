@@ -96,7 +96,7 @@ class Line:
 
     def hitPartier(self,x,y):
         self.parent.sc+=20*len(self.members)
-        print 'hit partier'
+        #print 'hit partier'
         temp = LevelWalker(Globals.currentLevel, LevelLocation(self.members[0].levelWalker._location.grid,x,y), set = False)
         # scan the partiers list for nearest partier
         w = self.members[0].levelWalker
@@ -148,6 +148,9 @@ class Line:
             self.members[-1].node.setHpr(hpr)
             self.walkers[random.randint(0,len(self.walkers)-1)].instanceTo(self.members[-1].node)
             self.stopDash()
+        self.parent.cong=0
+        self.parent.dash.setText("")
+        self.parent.dd.setText("")
         for i in self.members:
             #i.node.setH((self.members[0].angle+180)%360)
             #i.angle=(i.angle+180)%360
@@ -218,7 +221,7 @@ class Line:
             if self.congaDash and abs(self.dashX-top.levelWalker._location.x)+abs(self.dashY-top.levelWalker._location.y)>=8:
                     self.stopDash()
             if(self.parent.time!=0):
-                self.parent.time-=.02
+                self.parent.time-=elapsed
                 self.parent.spawner+=1
             if(self.parent.cong>=300):
                 self.parent.dash.setText("(Space to Dash)")
