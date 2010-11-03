@@ -12,6 +12,7 @@ from Line import Line
 from Level import Level,LevelGrid
 from LevelWalker import LevelWalker
 from direct.gui.OnscreenText import OnscreenText
+from direct.gui.OnscreenImage import OnscreenImage
 from Door import Door
 
 class World(DirectObject):  #Subclassing here is necessary to accept events
@@ -38,6 +39,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.accept("arrow_down-up", self.setKey,["backwards", 0])
         self.accept("a", self.setKey,["add", 1])
         self.max = 0
+        self.cong= 1
 
         self.CP = OnscreenText(text = "ConGo Power: ", pos = (-1, .8), scale = 0.07, fg=(1,1,1,1))
         self.length = OnscreenText(text = 'Length: ', pos = (-.5, .8), scale = 0.07, fg=(1,1,1,1))
@@ -45,6 +47,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.SpeedUp = OnscreenText(text = 'SpeedUp: ', pos = (.5, .8), scale = 0.07, fg=(1,1,1,1))
         self.timer = OnscreenText(text = 'Timer: ', pos = (1, .8), scale = 0.07, fg=(1,1,1,1))
         self.score = OnscreenText(text = 'Score: ', pos = (-.3, -.9), scale = 0.1, fg=(1,1,1,1))
+        self.congp = OnscreenImage(image = 'textures/green.png', pos = (-1, 0,.7), scale = (.001*1,0,0.028))
         
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game

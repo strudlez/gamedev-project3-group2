@@ -135,6 +135,8 @@ class Line:
             
         else: self.hitWall()
     def move(self,elapsed,keymap):
+        self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
+        self.parent.cong+=.2
         self.parent.length.setText("Length: %i"%len(self.members))
         self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
         if(self.parent.max < len(self.members)):
