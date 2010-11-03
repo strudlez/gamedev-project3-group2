@@ -63,9 +63,10 @@ class Line:
         #~ self.cameraCurrDist=self.cameraDist
         
     def addMember(self,color=None):
-        self.playerActor.play("snuggle")
-        for i in self.walkers:
-            i.play("snuggle")
+        if len(self.members):
+            self.playerActor.play("snuggle")
+            for i in self.walkers:
+                i.play("snuggle")
         back=None
         if len(self.members):
             back=self.members[-1]
@@ -194,7 +195,11 @@ class Line:
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
 
     def move(self,elapsed,keymap):
+        
         top=self.members[0]
+        if not self.playerActor.getCurrentAnim():
+            self.playerActor.loop('walk')
+            for i in self.walkers: i.loop('walk')
         if Globals.CAMERA_PAUSE:
             keymap["add"]=0
             Globals.CAMERA_PAUSE-=1
