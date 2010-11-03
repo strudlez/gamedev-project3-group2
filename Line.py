@@ -9,6 +9,8 @@ import Globals
 import LevelConstants
 from Partier import Partier
 from direct.filter.CommonFilters import CommonFilters
+from LevelWalker import LevelWalker
+from LevelLocation import LevelLocation
 
 class Line:
     def __init__(self,parent):
@@ -83,12 +85,13 @@ class Line:
         if self.congaDash: Globals.CONGASPEED=0.8
         else: Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
 
-    def hitPartier(self):
+    def hitPartier(self,x,y):
         print 'hit partier'
+        temp = LevelWalker(Globals.currentLevel, LevelLocation(self.members[0].levelWalker._location.grid,x,y), set = False)
         # scan the partiers list for nearest partier
         w = self.members[0].levelWalker
         for partier in Partier.all:
-            if partier.collidesWith(w):
+            if partier.collidesWith(temp):
                 partier.destroy()
                 self.addMember()
                 break
@@ -112,7 +115,7 @@ class Line:
     def hitWall(self):
         
         self.members.reverse()
-        num=math.ceil(len(self.members)/4.0)
+        num=int(math.ceil(len(self.members)/4.0))
         if not self.congaDash:
             for i in range(0,num):
                 self.parent.leaving.append(LineLeaver(self.members[-1].actor,self.members[-1].node.getPos(),self.members[-1].angle+random.randint(-45,45),len(self.parent.leaving)))
@@ -167,8 +170,8 @@ class Line:
             dir=1
             x,y=top.levelWalker._location.x,top.levelWalker._location.y
             for x,y in ((x,y),(x+1,y),(x-1,y),(x,y+1),(x,y-1),(x+1,y+1),(x+1,y-1),(x-1,y+1),(x-1,y-1)):
-                if self.parent.level._grids[top.levelWalker._location.grid].getCell(x, y)==4:
-                    self.parent.level._grids[top.levelWalker._location.grid].setCell(x, y,0)
+                if Globals.currentLevel._grids[top.levelWalker._location.grid].getCell(x, y)==LevelConstants.DOOR:
+                    Globals.currentLevel._grids[top.levelWalker._location.grid].setCell(x, y,0)
             top.levelWalker.set()
             if top.angle!=door.node.getH():dir=-1
             door.fall(dir)
@@ -252,21 +255,22 @@ class Line:
                 for i in range(1,len(self.members)):
                     if COLLIDE_DEBUG:Globals.CONGASPEED=congaspeed
                     self.members[i].move(self.members[i-1])
-            
-            if ret==LevelConstants.LINE_WALKER:
-                self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
-            elif ret==LevelConstants.WALL or ret==LevelConstants.FURNITURE:
-                self.hitWall()
-                top=self.members[0]
-                break
-            elif ret==LevelConstants.DOOR:
-                self.hitDoor()
-                top=self.members[0]
-                break
-            elif ret == LevelConstants.PARTIER:
-                self.hitPartier()
-                top = self.members[0]
-                break
+            if ret:
+                x,y,type=ret
+                if type==LevelConstants.LINE_WALKER:
+                    self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
+                elif type==LevelConstants.WALL or type==LevelConstants.FURNITURE:
+                    self.hitWall()
+                    top=self.members[0]
+                    break
+                elif type==LevelConstants.DOOR:
+                    self.hitDoor()
+                    top=self.members[0]
+                    break
+                elif type == LevelConstants.PARTIER:
+                    self.hitPartier(x,y)
+                    top = self.members[0]
+                    break
                 
         angleTo=self.cameraAngle+self.cameraDiff
         camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))

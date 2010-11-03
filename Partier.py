@@ -35,6 +35,7 @@ class Partier(object):
         self._actor.loop('walk')
 
         self._actor.reparentTo(render)
+        self._actor.setShaderOff()
 
         self._dir = None
         self._dirVec = (0, 0, 0)

@@ -71,7 +71,7 @@ class LineMember():
             if col:
                 colX,colY,colType=col
                 #print "OH MY GOD, YOU JUST KILLED A PANDA",colX,colY
-                ret=colType
+                ret=col
             
                 
         self.moveTo()
