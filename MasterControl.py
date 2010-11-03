@@ -59,7 +59,32 @@ class MasterControl(DirectObject):
         w = World()
         while True:
             yield
-            # TODO this never ends, OMG!
+            if w.time <= 0:
+                self._updateFunc = self.youWinScreen().next
+            if w.dead:
+                self._updateFunc = self.gameOverScreen().next
+
+    def gameOverScreen(self):
+        s = PictureAnimation([
+          'gameover.png'
+        ], 5)
+        s.play()
+        while not s.isDone:
+            yield
+        s.destroy()
+        self._updateFunc = self.titleMenu().next
+        yield
+
+    def youWinScreen(self):
+        s = PictureAnimation([
+          'youwin.png'
+        ], 5)
+        s.play()
+        while not s.isDone:
+            yield
+        s.destroy()
+        self._updateFunc = self.titleMenu().next
+        yield
 
     def destroy(self):
         taskMgr.remove(self.update)
