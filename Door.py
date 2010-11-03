@@ -15,6 +15,7 @@ class Door:
         if self.falling:return
         self.falling=1
         self.fallDir=dir*3
+    
     def move(self):
         if self.falling and not self.dead:
             self.node.setP(self.node.getP()+self.fallDir)
@@ -24,3 +25,7 @@ class Door:
             elif self.node.getP()<-90:
                 self.node.setP(-90)
                 #self.dead=1
+    def unDie(self):
+        self.falling=0
+        self.dead=0
+        self.setP(0)
