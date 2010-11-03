@@ -1,0 +1,63 @@
+Patrick Buford - artist
+
+Models:
+Player/NPCs
+TV set
+lamp
+cups
+punch bowl
+snack table
+coffee table
+ping pong table
+couch
+chair
+cupboards
+bed
+
+Level arrangement
+
+Textures:
+Player/NPCs
+TV
+lamp
+cups
+punch bowl
+ping pong table
+couch
+kitchen floor
+room colors (floor/walls)
+Title screens
+game over screens (win/lose)
+
+Animation:
+conga
+walk(idle)
+stand
+snuggle
+stumble
+
+
+
+Arthur Chen - artist
+
+Models:
+stool
+refrigerator
+kitchen counter
+nightstand
+laundry washer and dryer
+speaker
+door
+
+Textures:
+wood
+doorknob
+washer
+dryer
+refrigerator
+bedsheets
+marble
+speaker
+title
+play button
+quit button
