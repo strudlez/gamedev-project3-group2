@@ -4,7 +4,7 @@ from direct.showbase.DirectObject import DirectObject #for event handling
 from direct.actor.Actor import Actor #for animated models
 from direct.interval.IntervalGlobal import * #for compound intervals
 from direct.task import Task #for update functions
-import sys, math, random, cPickle, bullet
+import sys, math, random, cPickle
 from direct.gui.OnscreenImage import OnscreenImage
 
 class Partier(DirectObject):    

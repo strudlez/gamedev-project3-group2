@@ -79,6 +79,22 @@ class Line:
         for i in self.members:
             self.members[0].levelWalker.set()
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
+    def hitWall(self):
+        self.members.reverse()
+        for i in range(0,2):
+            if(len(self.members)<=1):
+                break
+            self.members[len(self.members)-1].delete()
+            self.members.pop(len(self.members)-1)
+        for i in self.members:
+            #i.node.setH((self.members[0].angle+180)%360)
+            #i.angle=(i.angle+180)%360
+            
+            i.angle=(i.angle+180)%360
+            i.levelWalker.unset()
+            dir={0:'U',180:'D',270:'L',90:'R'}[i.angle]
+            i.levelWalker.walk(dir)
+        self.angleTo=self.angle=self.members[0].angle
     def move(self,elapsed,keymap):
         if keymap["add"]:
             keymap["add"]=0
@@ -139,10 +155,14 @@ class Line:
                 #print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
                 self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
             elif ret==2:
-                pass
+                self.hitWall()
+                top=self.members[0]
+                break
                 #print "WALL",top.levelWalker._location.x,top.levelWalker._location.y
             elif ret==3:
-                pass
+                self.hitWall()
+                top=self.members[0]
+                break
                 #print "COUCH",top.levelWalker._location.x,top.levelWalker._location.y
         angleTo=self.cameraAngle+self.cameraDiff
         camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))
