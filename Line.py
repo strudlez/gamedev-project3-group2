@@ -126,6 +126,8 @@ class Line:
         
     def hitWall(self):
         self.parent.sc-=200
+        if len(self.members) == 1:
+            self.parent.dead = True
         self.members.reverse()
         num=int(math.ceil(len(self.members)/4.0))
         if not self.congaDash:
