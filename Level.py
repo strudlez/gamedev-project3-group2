@@ -17,12 +17,22 @@ class LevelGrid(object):
     def __init__(self, width=13,height=13, offsetX=0,offsetY=-1):
         self.offsetX = offsetX
         self.offsetY = offsetY
-        self.width = width
-        self.height = height
-        col=[2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,3,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,3,3,3,0,0,0,0,0,2,2,3,0,0,3,3,3,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,3,3,3,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,1,1,2,2]
+        #self.width = width
+        #self.height = height
+        col=open("Grid.txt").read().replace('\n','').split(',')
+        self.height=height=len(open("Grid.txt").readlines())
+        self.width=width=len(col)/height
+        print width,height
+        #~ col=[2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,3,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,3,3,3,0,0,0,0,0,2,2,3,0,0,3,3,3,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,3,2,2,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,3,3,3,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,1,1,2,2]
+        try:
+            i=col.index('8')
+            self.offsetX=i%height
+            self.offsetY=i/height
+            col[i]='0'
+        except:pass
         self.grid = array.array('H', [0]*width*height)
         for i in range(len(self.grid)):
-            self.grid[i]=col[i]
+            self.grid[i]=int(col[i])
     
     def printGrid(self):
         print '-'*self.width
@@ -33,9 +43,11 @@ class LevelGrid(object):
             print s
     def getCell(self, x, y):
         #print x,y
-        return self.grid[(self.height-y-1+self.offsetY) * self.width + x+self.offsetX]
+        #return self.grid[(self.height-y-1+self.offsetY) * self.width + x+self.offsetX]
+        return self.grid[(y+self.offsetY) * self.width + self.width-x-1+self.offsetX]
     
     def setCell(self, x, y, newValue):
-        self.grid[(self.height-y-1+self.offsetY) * self.width + x + self.offsetX] = newValue
+        #self.grid[(self.height-y-1+self.offsetY) * self.width + x + self.offsetX] = newValue
+        self.grid[(y+self.offsetY) * self.width + self.width-x-1 + self.offsetX] = newValue
         
         

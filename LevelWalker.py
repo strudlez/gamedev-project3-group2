@@ -35,13 +35,15 @@ class LevelWalker(object):
         dx, dy = {'U':(0, -1), 'D':(0, 1), 'L':(-1, 0), 'R':(1, 0)}[dir]
         ret=None
         # walk forward one unit at a time
-        
+        col=self._level._grids[self._grid].getCell(self._location.x,self._location.y)
         for a in xrange(0, units):
-            col=self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)
+            #col=self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)
+            
             #self._location.x += dx
             #self._location.y += dy
             if col:
-                ret=int(round(self._location.x+dx,2)),int(round(self._location.y+dy,2)),self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)
+                #ret=int(round(self._location.x+dx,2)),int(round(self._location.y+dy,2)),self._level._grids[self._grid].getCell(self._location.x+dx,self._location.y+dy)
+                ret=int(round(self._location.x,2)),int(round(self._location.y,2)),self._level._grids[self._grid].getCell(self._location.x,self._location.y)
             if col>1:
                 self.unset()
                 self._location.x += dx
