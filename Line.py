@@ -34,14 +34,12 @@ class Line:
         self.playerActor=Actor("models/player", {"walk": "models/conga"})
         self.playerActor.loop("walk")
         colors=['white','yellow','black','purple','blue','red']
+        colors=['yellow','purple','blue','red']
         self.walkers=[]
         for i in colors:
             self.walkers.append(Actor("models/%s" %i , {"walk": "models/conga"}))
             self.walkers[-1].loop("walk")
-        #self.actor.setControlEffect("eat", 1)
-        #self.actor.setScale(.0025)
-        #self.actor.setH(self.angle)
-        #self.actor.reparentTo(render)
+        
         self.longLine=1
         for i in range(1):
             self.addMember()
@@ -55,8 +53,6 @@ class Line:
         self.cameraDist=100
         self.cameraCurrDist=self.cameraDist
         
-        #self.filters = CommonFilters(base.win, base.cam)
-        #self.filters.setBloom(blend=(1,1,1,1), desat=-0.5, intensity=3.0, size=40)
     def addMember(self):
         back=None
         if len(self.members):

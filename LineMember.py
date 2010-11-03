@@ -110,10 +110,6 @@ class LineMember():
         angle=angle%360
         self.node.setH(angle)
         
-        
-        #angle = math.radians(self.angle)
-        #dx = Globals.CONGASTEP * math.sin(angle)
-        #dy = Globals.CONGASTEP * -math.cos(angle)
         dx, dy = {0:(0, -Globals.CONGASTEP), 180:(0, Globals.CONGASTEP), 270:(-Globals.CONGASTEP, 0), 90:(Globals.CONGASTEP, 0)}[self.angle]
         
         self.node.setPos(self.node.getX() + dx, self.node.getY() + dy, self.node.getZ())

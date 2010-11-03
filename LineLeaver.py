@@ -20,6 +20,7 @@ class LineLeaver():
         actor.instanceTo(self.node)
         self.dx = Globals.CONGASTEP * math.sin(angle)
         self.dy = Globals.CONGASTEP * -math.cos(angle)
+        self.node.setTransparency(TransparencyAttrib.MAlpha)
         
     
     def delete(self):
@@ -31,4 +32,4 @@ class LineLeaver():
         self.node.setPos(self.node.getX() + self.dx, self.node.getY() + self.dy, self.node.getZ())
         if self.frame==self.deadOn:self.dead=1
         color=1-float(self.frame)/self.deadOn
-        self.node.setColorScale(color,color,color,color)
+        self.node.setAlphaScale(color)
