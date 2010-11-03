@@ -28,6 +28,7 @@ class Line:
         self.topX=0
         self.topY=0
         
+        self.congaDash=1
         
         self.pos=[]
         #self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
@@ -116,6 +117,23 @@ class Line:
         self.members[0].node.setHpr(hpr)
         self.playerActor.instanceTo(self.members[0].node)
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
+    def hitDoor(self):
+        if self.congaDash:
+            doors=self.parent.doors
+            door=None
+            dist=-1
+            top=self.members[0]
+            for i in doors:
+                d=math.sqrt((top.node.getX()-i.node.getX())**2 + (top.node.getY()-i.node.getY())**2)
+                if dist==-1 or d<dist:
+                    dist=d
+                    door=i
+            dir=1
+            
+            if top.angle!=door.node.getH():dir=-1
+            door.fall(dir)
+            
+        else: self.hitWall()
     def move(self,elapsed,keymap):
         if keymap["add"]:
             keymap["add"]=0
@@ -183,6 +201,11 @@ class Line:
             elif ret==3:
                 self.hitWall()
                 top=self.members[0]
+                break
+            elif ret==4:
+                self.hitDoor()
+                top=self.members[0]
+                #top=self.members[0]
                 break
                 #print "COUCH",top.levelWalker._location.x,top.levelWalker._location.y
         angleTo=self.cameraAngle+self.cameraDiff

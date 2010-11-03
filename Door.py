@@ -9,15 +9,18 @@ class Door:
         
         self.node.setPos(x,y,0)
         self.node.setH(angle)
+    def delete(self):
+        self.node.removeNode()
     def fall(self,dir):
+        if self.falling:return
         self.falling=1
-        self.fallDir=dir
+        self.fallDir=dir*3
     def move(self):
         if self.falling and not self.dead:
             self.node.setP(self.node.getP()+self.fallDir)
-            if self.node.getP()>=90:
+            if self.node.getP()>90:
                 self.node.setP(90)
-                self.dead=1
-            elif self.node.getP()<=-90:
+                #self.dead=1
+            elif self.node.getP()<-90:
                 self.node.setP(-90)
-                self.dead=1
+                #self.dead=1
