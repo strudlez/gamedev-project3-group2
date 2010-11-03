@@ -72,7 +72,7 @@ class Line:
             else:
                 self.cameraDist+=Globals.CAMERA_MOVE
                 self.cameraDown-=Globals.CAMERA_MOVE_ANGLE
-        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
+        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
         
     def hitMember(self,x,y):
         x=self.members[0].levelWalker._location.x
@@ -87,7 +87,7 @@ class Line:
                 break
         for i in self.members:
             self.members[0].levelWalker.set()
-        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
+        Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
     def hitWall(self):
         
         self.members.reverse()
@@ -135,6 +135,11 @@ class Line:
             
         else: self.hitWall()
     def move(self,elapsed,keymap):
+        self.parent.length.setText("Length: %i"%len(self.members))
+        self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
+        if(self.parent.max < len(self.members)):
+            self.parent.max = len(self.members)
+        self.parent.mlength.setText("Max Length: %i"%self.parent.max)
         if keymap["add"]:
             keymap["add"]=0
             self.addMember()

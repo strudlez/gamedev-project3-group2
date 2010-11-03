@@ -11,6 +11,7 @@ from Globals import *
 from Line import Line
 from Level import Level,LevelGrid
 from LevelWalker import LevelWalker
+from direct.gui.OnscreenText import OnscreenText
 from Door import Door
 
 class World(DirectObject):  #Subclassing here is necessary to accept events
@@ -36,7 +37,15 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.accept("arrow_down", self.setKey, ["backwards", 1])
         self.accept("arrow_down-up", self.setKey,["backwards", 0])
         self.accept("a", self.setKey,["add", 1])
+        self.max = 0
 
+        self.CP = OnscreenText(text = "ConGo Power: ", pos = (-1, .8), scale = 0.07, fg=(1,1,1,1))
+        self.length = OnscreenText(text = 'Length: ', pos = (-.5, .8), scale = 0.07, fg=(1,1,1,1))
+        self.mlength = OnscreenText(text = 'Max Length: ', pos = (0, .8), scale = 0.07, fg=(1,1,1,1))
+        self.SpeedUp = OnscreenText(text = 'SpeedUp: ', pos = (.5, .8), scale = 0.07, fg=(1,1,1,1))
+        self.timer = OnscreenText(text = 'Timer: ', pos = (1, .8), scale = 0.07, fg=(1,1,1,1))
+        self.score = OnscreenText(text = 'Score: ', pos = (-.3, -.9), scale = 0.1, fg=(1,1,1,1))
+        
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
         self.level=Level()
@@ -61,26 +70,6 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.doors.append(Door(self.doorModel,2,20,-6,90))
         self.doors.append(Door(self.doorModel,3,4,18,0))
         
-        # self.bed = loader.loadModel("models/bedroom")
-        # self.bed.reparentTo(render)
-        # self.bed.setScale(2)
-        # self.bed.setPos(-16, 2, 0)
-        # self.bed.setP(270)
-        # self.bed.setH(180)
-        # self.lamp = loader.loadModel("models/flamberge")
-        # self.lamp.reparentTo(render)
-        # self.lamp.setPos(18, 20, 0)
-        # self.lamp.setP(270)
-        # self.snack = loader.loadModel("models/snacktable")
-        # self.snack.reparentTo(render)
-        # self.snack.setPos(4, 20, 0)
-        # self.snack.setP(270)
-        # self.snack.setScale(2)
-        # self.couch = loader.loadModel("models/couch")
-        # self.couch.reparentTo(render)
-        # self.couch.setPos(13, 20, 0)
-        # self.couch.setP(270)
-        # self.couch.setScale(2)
 
     def setLights(self):
         """Creates a global light"""
