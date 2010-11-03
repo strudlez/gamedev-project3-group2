@@ -144,6 +144,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         return Task.cont
 
     def destroy(self):
+        self.BGM.stop()
         taskMgr.remove(self._updateTask)
         self.env.removeNode()
         self.ignoreAll()
