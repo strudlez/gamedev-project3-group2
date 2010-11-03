@@ -189,6 +189,8 @@ class Line:
                 self.stopDash()
         if(self.parent.time!=0):
             self.parent.time-=.02
+        if(self.parent.cong>=300):
+            self.parent.dash.setText("(Space to Dash)")
         if(self.parent.cong<300):
             self.parent.cong+=.2+.1*len(self.members)
         elif keymap['dash']:
@@ -198,6 +200,7 @@ class Line:
             self.congaDash=1
             self.dashX=top.levelWalker._location.x
             self.dashY=top.levelWalker._location.y
+            self.parent.dash.setText("")
         self.parent.length.setText("Length: %i"%len(self.members))
         self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
         if(self.parent.max < len(self.members)):
