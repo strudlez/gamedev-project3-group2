@@ -42,9 +42,9 @@ class Line:
         self.playerActor=Actor("models/player", {"walk": "models/conga"})
         self.playerActor.loop("walk")
         colors=['white','yellow','black','purple','blue','red']
-        colors=['yellow','purple','blue','red']
+        self.colors=['yellow','purple','blue','red']
         self.walkers=[]
-        for i in colors:
+        for i in self.colors:
             self.walkers.append(Actor("models/%s" %i , {"walk": "models/conga"}))
             self.walkers[-1].loop("walk")
         
@@ -62,13 +62,18 @@ class Line:
         #~ self.cameraDist=100
         #~ self.cameraCurrDist=self.cameraDist
         
-    def addMember(self):
+    def addMember(self,color=None):
         back=None
         if len(self.members):
             back=self.members[-1]
-        actor=self.walkers[random.randint(0,len(self.walkers)-1)]
+        actor=None
         if len(self.members)==0:
-            actor=self.playerActor
+                actor=self.playerActor
+        else: 
+            if not color:
+                actor=self.walkers[random.randint(0,len(self.walkers)-1)]
+            else:
+                actor=self.walkers[self.colors.index(color)]
         member=LineMember(self,actor,back,len(self.members)+1)
         self.members.append(member)
         for i in self.members:
@@ -93,8 +98,9 @@ class Line:
         w = self.members[0].levelWalker
         for partier in Partier.all:
             if partier.collidesWith(temp):
+                self.addMember(partier.color)
                 partier.destroy()
-                self.addMember()
+                
                 break
         
     def hitMember(self,x,y):

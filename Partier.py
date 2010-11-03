@@ -30,7 +30,9 @@ class Partier(object):
         self._lastTime = 0
 
         # actor for partier
-        self._actor = Actor("models/player", {"walk": "models/conga"})
+        colors=['yellow','purple','blue','red']
+        self.color=colors[random.randint(0,len(colors)-1)]
+        self._actor = Actor("models/%s" % self.color, {"walk": "models/conga"})
 
         self._actor.loop('walk')
 
