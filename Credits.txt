@@ -1,5 +1,6 @@
+=======================
 Patrick Buford - artist
-
+=======================
 Models:
 Player/NPCs
 TV set
@@ -37,9 +38,9 @@ snuggle
 stumble
 
 
-
+====================
 Arthur Chen - artist
-
+====================
 Models:
 stool
 refrigerator
@@ -62,8 +63,16 @@ title
 play button
 quit button
 
-
+=============================
 Zachary Strudler - programmer
-
+=============================
 Line Movement
 Collision Detection/Handling
+
+===========================
+Andrew Bradley - programmer
+===========================
+Wandering partier implementation
+environment/level grid and traversal system
+title menu
+splash screens
