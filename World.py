@@ -95,7 +95,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         #Use clearLight() to turn it off
         
         self.ambientLight = AmbientLight("ambientLight")
-        self.ambientLight.setColor((.25, .25, .25, 1))
+        self.ambientLight.setColor((0.5, 0.5, 0.5, 1))
         self.ambientLightNP = render.attachNewNode(self.ambientLight)
         render.setLight(self.ambientLightNP)
 
