@@ -60,8 +60,10 @@ class MasterControl(DirectObject):
         while True:
             yield
             if w.time <= 0:
+                w.destroy()
                 self._updateFunc = self.youWinScreen().next
             if w.dead:
+                w.destroy()
                 self._updateFunc = self.gameOverScreen().next
 
     def gameOverScreen(self):

@@ -319,3 +319,8 @@ class Line:
         camera.setPos(camera,0,-curDist,0)
         
         
+    def destroy(self):
+        for m in self.members[:]:
+            m.delete()
+        for w in self.walkers[:]:
+            w.removeNode()

@@ -128,9 +128,10 @@ class Partier(object):
         return (self._walker.colocated(location) or self._nextWalker.colocated(location))
 
 
-    def destroy(self):
+    def destroy(self, spawnLeaver = True):
         actor=Globals.WALKERS[Globals.COLORS.index(self.color)]
-        Globals.LEAVING.append(LineLeaver(actor,self._actor.getPos(),self._actor.getH(),len(Globals.LEAVING),speed=0))
+        if spawnLeaver:
+            Globals.LEAVING.append(LineLeaver(actor,self._actor.getPos(),self._actor.getH(),len(Globals.LEAVING),speed=0))
         taskMgr.remove(self._updateTask)
         Partier.all.remove(self)
         for i in [self._nextWalker, self._walker]:

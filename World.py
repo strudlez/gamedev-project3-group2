@@ -33,7 +33,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         self.keymap = {"left":0, "right":0, "forward":0, "backwards":0, "add":0, "dash":0}
         self.prevtime = 0
-        taskMgr.add(self.move, "moveTask")
+        self._updateTask = taskMgr.add(self.move, "moveTask")
         
         self.accept("arrow_up", self.setKey, ["forward", 1])
         self.accept("arrow_up-up", self.setKey, ["forward", 0]) 
@@ -142,3 +142,37 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
                 self.doors.pop(i)
         self.prevtime = task.time
         return Task.cont
+
+    def destroy(self):
+        taskMgr.remove(self._updateTask)
+        self.env.removeNode()
+        self.ignoreAll()
+        for i in [
+          self.CP,
+          self.dash,
+          self.length,
+          self.mlength,
+          self.SpeedUp,
+          self.timer,
+          self.score,
+          self.congp
+        ]:
+            i.removeNode()
+        for light in [
+          self.dirLight,
+          self.ambientLight
+        ]:
+            pass
+        for light in [
+          self.dirLightNP,
+          self.ambientLightNP
+        ]:
+            render.clearLight(light)
+        for door in self.doors:
+            door.delete()
+        for p in Partier.all[:]:
+            p.destroy(spawnLeaver = False)
+        self.line.destroy()
+        # HACK: just delete everything under render cuz it's not all getting removed otherwise
+        if not render.isEmpty():
+            render.getChildren().clear()
