@@ -237,9 +237,6 @@ class Line:
             if(self.parent.max < len(self.members)):
                 self.parent.max = len(self.members)
             self.parent.mlength.setText("Max Length: %i"%self.parent.max)
-            if keymap["add"]:
-                keymap["add"]=0
-                self.addMember()
             
             #if keymap["left"] and (self.angle-self.cameraAngle)%180!=90:
             for i in range(int(Globals.CONGASPEED/Globals.CONGASTEP)):

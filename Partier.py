@@ -12,7 +12,7 @@ from LineLeaver import LineLeaver
 class Partier(object):
 
     # walking speed of partier, in cells per second
-    WANDER_SPEED = 3
+    WANDER_SPEED = 2
 
     # how quickly partier rotates, in degrees per second
     TURN_SPEED = 270
