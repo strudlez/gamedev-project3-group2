@@ -6,6 +6,8 @@ import math
 import random
 from Globals import *
 import Globals
+import LevelConstants
+from Partier import Partier
 from direct.filter.CommonFilters import CommonFilters
 
 class Line:
@@ -73,6 +75,16 @@ class Line:
                 self.cameraDist+=Globals.CAMERA_MOVE
                 self.cameraDown-=Globals.CAMERA_MOVE_ANGLE
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
+
+    def hitPartier(self):
+        print 'hit partier'
+        # scan the partiers list for nearest partier
+        w = self.members[0].levelWalker
+        for partier in Partier.all:
+            if partier.collidesWith(w):
+                partier.destroy()
+                self.addMember()
+                break
         
     def hitMember(self,x,y):
         x=self.members[0].levelWalker._location.x
@@ -88,6 +100,7 @@ class Line:
         for i in self.members:
             self.members[0].levelWalker.set()
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members))/4+0.1
+        
     def hitWall(self):
         
         self.members.reverse()
@@ -117,6 +130,7 @@ class Line:
         self.members[0].node.setHpr(hpr)
         self.playerActor.instanceTo(self.members[0].node)
         Globals.CONGASPEED=Globals.CONGASTEP*(len(self.members)-1)/4+0.1
+
     def hitDoor(self):
         if self.congaDash:
             doors=self.parent.doors
@@ -134,6 +148,7 @@ class Line:
             door.fall(dir)
             
         else: self.hitWall()
+
     def move(self,elapsed,keymap):
         self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
         self.parent.timer.setText("Timer: %i"%self.parent.time)
@@ -198,27 +213,26 @@ class Line:
                 for i in range(1,len(self.members)):
                     if COLLIDE_DEBUG:Globals.CONGASPEED=congaspeed
                     self.members[i].move(self.members[i-1])
-            for i in self.members:
-                pass#print i.levelWalker._location.x,i.levelWalker._location.y
-            if ret==1:
+            if ret==LevelConstants.LINE_WALKER:
                 pass
                 #print 'PANDA',top.levelWalker._location.x,top.levelWalker._location.y
                 self.hitMember(top.levelWalker._location.x,top.levelWalker._location.y)
-            elif ret==2:
+            elif ret==LevelConstants.WALL or ret==LevelConstants.FURNITURE:
                 self.hitWall()
                 top=self.members[0]
                 break
                 #print "WALL",top.levelWalker._location.x,top.levelWalker._location.y
-            elif ret==3:
-                self.hitWall()
-                top=self.members[0]
-                break
-            elif ret==4:
+            elif ret==LevelConstants.DOOR:
                 self.hitDoor()
                 top=self.members[0]
                 #top=self.members[0]
                 break
                 #print "COUCH",top.levelWalker._location.x,top.levelWalker._location.y
+            elif ret == LevelConstants.PARTIER:
+                self.hitPartier()
+                top = self.members[0]
+                break
+                
         angleTo=self.cameraAngle+self.cameraDiff
         camera.setH(turnAngle(camera.getH(),angleTo,TURNSPEED))
         #camera.setP(-90)

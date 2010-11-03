@@ -3,6 +3,8 @@ from ModelMetadataCache import ModelMetadataCache
 
 globalModelLoader = ModelLoader(ModelMetadataCache())
 
+currentLevel = None
+
 GRIDSIZE = 2
 CONGASPEED=0.1
 CONGASTEP=0.1

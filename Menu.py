@@ -1,5 +1,6 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.OnscreenImage import OnscreenImage
+from pandac.PandaModules import TransparencyAttrib
 
 class Menu(DirectObject):
 
@@ -48,8 +49,9 @@ class Menu(DirectObject):
             selected = OnscreenImage(image = sf, pos = (x, 0, y), parent = self._rootNode)
             self._menuImages.append((selected, deselected))
             selected.hide()
-            selected.setScale(self.IMAGE_SCALE)
-            deselected.setScale(self.IMAGE_SCALE)
+            for i in [selected, deselected]:
+                i.setScale(self.IMAGE_SCALE)
+                i.setTransparency(TransparencyAttrib.MAlpha)
             x += self.MENU_DX
             y += self.MENU_DY
 

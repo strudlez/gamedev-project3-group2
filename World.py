@@ -7,7 +7,9 @@ from direct.task import Task #for update functions
 import sys, math, random
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText
-from Globals import *
+import Globals
+from Partier import Partier
+from LevelLocation import LevelLocation
 from Line import Line
 from Level import Level,LevelGrid
 from LevelWalker import LevelWalker
@@ -53,9 +55,13 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         self.accept("escape", sys.exit) #Allow the player to press esc to exit the game
         self.level=Level()
+
+        Globals.currentLevel = self.level
         
         self.line=Line(self)
         self.leaving=[]
+
+        partierTest = Partier(LevelLocation('floor1', 2, 2))
         
 
     def loadEnvironment(self):

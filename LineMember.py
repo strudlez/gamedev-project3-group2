@@ -1,8 +1,8 @@
 from pandac.PandaModules import * #basic Panda modules
-from pandac.PandaModules import *
-from Globals import *
 import Globals
-from LevelWalker import LevelWalker,Location
+from Globals import *
+from LevelWalker import LevelWalker
+from LevelLocation import LevelLocation
 import math
 
 class LineMember():
@@ -33,7 +33,7 @@ class LineMember():
         if front:
             gridX=front.levelWalker._location.x
             gridY=front.levelWalker._location.y
-        self.levelWalker=LevelWalker(self.parent.parent.level,Location(gridX,gridY))
+        self.levelWalker = LevelWalker(self.parent.parent.level,LevelLocation('floor1', gridX, gridY))
         if front:
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
             self.levelWalker.walk(dir,units=-1)
@@ -46,13 +46,16 @@ class LineMember():
         actor.instanceTo(self.node)
         self.actor=actor
         self.number=number
+    
     #Removes nodepath of member and unsets its position in grid
     def delete(self):
         self.node.removeNode()
         self.levelWalker.unset()
+
     def setAngle(self,angle):
         self.angle=angle
         self.node.setH(angle)
+
     def moveFront(self,angle):
         ret=0
         self.angle=angle
@@ -74,6 +77,7 @@ class LineMember():
         self.moveTo()
         #print self.gridX,self.gridY,self.levelWalker._location.x,self.levelWalker._location.y
         return ret
+
     def move(self,front):
         if not self.canMove:
             if front.gridX!=self.gridX or front.gridY!=self.gridY:
@@ -91,11 +95,10 @@ class LineMember():
                 self.levelWalker.walk(dir)
 
             self.moveTo()
+
     def setGrid(self):
         self.gridX=int(round(self.node.getX()/TILESIZE,2))
         self.gridY=int(round(self.node.getY()/TILESIZE,2))
-        
-        
             
     def moveTo(self):
         angle=self.node.getH()

@@ -39,6 +39,7 @@ class LevelGrid(object):
             for x in range(self.width):
                 s+='%d' % self.grid[y * self.width + x]
             print s
+            
     def getCell(self, x, y):
         #print x,y
         #return self.grid[(self.height-y-1+self.offsetY) * self.width + x+self.offsetX]
@@ -47,5 +48,3 @@ class LevelGrid(object):
     def setCell(self, x, y, newValue):
         #self.grid[(self.height-y-1+self.offsetY) * self.width + x + self.offsetX] = newValue
         self.grid[(y+self.offsetY) * self.width + self.width-x-1 + self.offsetX] = newValue
-        
-        
