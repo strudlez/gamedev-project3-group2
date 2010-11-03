@@ -13,7 +13,6 @@ class LevelWalker(object):
         '''returns a tuple of x, y, z representing spatial position that
         corresponds to LevelWalker's current position'''
         grid = self._level._grids[self._location.grid]
-        print grid.offsetX, grid.offsetY
         return (Globals.TILESIZE * (self._location.x - 1), Globals.TILESIZE * self._location.y, 0)
         # TODO find out why -1 offset is needed on x
     

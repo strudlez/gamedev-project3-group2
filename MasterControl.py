@@ -8,6 +8,7 @@ from direct.showbase.DirectObject import DirectObject
 # game imports
 from World import World
 from Menu import Menu
+from PictureAnimation import PictureAnimation
 
 class MasterControl(DirectObject):
     def __init__(self):
@@ -28,15 +29,31 @@ class MasterControl(DirectObject):
               ('Play', 0, 'menu_play'),
               ('Quit', 1, 'menu_quit')
             ])
+
+        self.startAnim = PictureAnimation([
+          'titlescreen0001.png',
+          'titlescreen0002.png',
+          'titlescreen0003.png',
+          'titlescreen0004.png'
+        ], 1)
+
         while True:
             yield
             if m.getSelected():
                 s = m.getSelection()
                 if s == 0:
                     m.destroy()
-                    self._updateFunc = self.playGame().next
+                    self._updateFunc = self.getReady().next
                 elif s == 1:
                     sys.exit()
+
+    def getReady(self):
+        self.startAnim.play()
+        while not self.startAnim.isDone:
+            yield
+        self.startAnim.destroy()
+        self._updateFunc = self.playGame().next
+        yield
 
     def playGame(self):
         w = World()
