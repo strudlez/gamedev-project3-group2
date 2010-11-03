@@ -51,6 +51,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
 
         self.CP = OnscreenText(text = "ConGo Power: ", pos = (-1, .8), scale = 0.07, fg=(1,1,1,1))
         self.dash = OnscreenText(text = "", pos = (-1, .6), scale = 0.07, fg=(1,1,1,1))
+        self.dd = OnscreenText(text = "", pos = (-1, .5), scale = 0.07, fg=(1,1,1,1))
         self.length = OnscreenText(text = 'Length: ', pos = (-.5, .8), scale = 0.07, fg=(1,1,1,1))
         self.mlength = OnscreenText(text = 'Max Length: ', pos = (0, .8), scale = 0.07, fg=(1,1,1,1))
         self.SpeedUp = OnscreenText(text = 'SpeedUp: ', pos = (.5, .8), scale = 0.07, fg=(1,1,1,1))
@@ -66,7 +67,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         self.line=Line(self)
         self.leaving=Globals.LEAVING
-        self.spawns=[2,2,-10,5,15,5,20,5,15,-15,20,-18,2,10,-5,12]
+        self.spawns=[2,2,-8,5,15,5,20,5,15,-15,20,-18,2,10,-5,12]
 
         partierTest = Partier(LevelLocation('floor1', 2, 2))
         partierTest = Partier(LevelLocation('floor1', -10, 5))

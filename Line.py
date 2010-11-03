@@ -222,6 +222,7 @@ class Line:
                 self.parent.spawner+=1
             if(self.parent.cong>=300):
                 self.parent.dash.setText("(Space to Dash)")
+                self.parent.dd.setText("(Dash to break doors)")
             if(self.parent.cong<300):
                 self.parent.cong+=.2+.1*len(self.members)
             elif keymap['dash']:
@@ -232,6 +233,7 @@ class Line:
                 self.dashX=top.levelWalker._location.x
                 self.dashY=top.levelWalker._location.y
                 self.parent.dash.setText("")
+                self.parent.dd.setText("")
             self.parent.length.setText("Length: %i"%len(self.members))
             self.parent.SpeedUp.setText("SpeedUp: %i"%(4-len(self.members)%4))
             if(self.parent.max < len(self.members)):
