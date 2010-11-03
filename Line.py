@@ -39,13 +39,13 @@ class Line:
         
         self.pos=[]
         #self.actor=Actor("models/panda-model", {"walk": "models/panda-walk4", "eat": "models/panda-eat"})
-        self.playerActor=Actor("models/player", {"walk": "models/conga"})
+        self.playerActor=Actor("models/player", {"walk": "models/conga","snuggle": "models/snuggle"})
         self.playerActor.loop("walk")
         colors=['white','yellow','black','purple','blue','red']
         Globals.COLORS=self.colors=['yellow','purple','blue','red']
         Globals.WALKERS=self.walkers=[]
         for i in self.colors:
-            self.walkers.append(Actor("models/%s" %i , {"walk": "models/conga"}))
+            self.walkers.append(Actor("models/%s" %i , {"walk": "models/conga","snuggle": "models/snuggle"}))
             self.walkers[-1].loop("walk")
         
         self.longLine=1
@@ -63,6 +63,9 @@ class Line:
         #~ self.cameraCurrDist=self.cameraDist
         
     def addMember(self,color=None):
+        self.playerActor.play("snuggle")
+        for i in self.walkers:
+            i.play("snuggle")
         back=None
         if len(self.members):
             back=self.members[-1]
@@ -193,6 +196,7 @@ class Line:
     def move(self,elapsed,keymap):
         top=self.members[0]
         if Globals.CAMERA_PAUSE:
+            keymap["add"]=0
             Globals.CAMERA_PAUSE-=1
         else:
             self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
