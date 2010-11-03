@@ -136,6 +136,9 @@ class Line:
         else: self.hitWall()
     def move(self,elapsed,keymap):
         self.parent.congp.setScale(.001*self.parent.cong,0,0.028)
+        self.parent.timer.setText("Timer: %i"%self.parent.time)
+        if(self.parent.time!=0):
+            self.parent.time-=.02
         if(self.parent.cong<300):
             self.parent.cong+=.2
         self.parent.length.setText("Length: %i"%len(self.members))

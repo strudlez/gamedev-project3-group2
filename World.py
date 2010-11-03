@@ -40,6 +40,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.accept("a", self.setKey,["add", 1])
         self.max = 0
         self.cong= 1
+        self.time=200
 
         self.CP = OnscreenText(text = "ConGo Power: ", pos = (-1, .8), scale = 0.07, fg=(1,1,1,1))
         self.length = OnscreenText(text = 'Length: ', pos = (-.5, .8), scale = 0.07, fg=(1,1,1,1))
