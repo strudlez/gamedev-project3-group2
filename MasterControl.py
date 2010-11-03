@@ -93,7 +93,9 @@ class MasterControl(DirectObject):
 
     def setResolution(self):
         """Set the screen resolution"""
+        base.disableMouse()
         wp = WindowProperties()
-        #wp.setSize(1024, 768) # there will be more resolutions
-        #wp.setFullscreen(True)
+        wp.setSize(1024, 768) # there will be more resolutions
+        wp.setFullscreen(True)
+        
         base.win.requestProperties(wp)
