@@ -114,7 +114,7 @@ class Line:
             #if self.members[i].gridX==x and self.members[i].gridY==y:
             if self.members[i].levelWalker._location.x==x and self.members[i].levelWalker._location.y==y:
                 for j in range(i,len(self.members)):
-                    self.parent.sc-=50
+                    self.parent.sc-=100
                     self.parent.leaving.append(LineLeaver(self.members[i].actor,self.members[i].node.getPos(),(self.members[i].angle+180)%360,len(self.parent.leaving)))
                     self.members[i].delete()
                     self.members.pop(i)
