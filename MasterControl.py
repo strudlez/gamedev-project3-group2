@@ -1,6 +1,6 @@
 # python import
 import sys
-
+from direct.gui.OnscreenText import OnscreenText
 # panda imports
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
@@ -9,6 +9,7 @@ from direct.showbase.DirectObject import DirectObject
 from World import World
 from Menu import Menu
 from PictureAnimation import PictureAnimation
+import Globals
 
 class MasterControl(DirectObject):
     def __init__(self):
@@ -71,21 +72,31 @@ class MasterControl(DirectObject):
           'gameover.png'
         ], 5)
         s.play()
+        self.max = OnscreenText(text = 'Max Length: %i'%Globals.MAX, pos = (.4, -.9), scale = 0.1, fg=(1,1,1,1))
+        self.score = OnscreenText(text = 'Score: %i'%Globals.SCORE, pos = (-.4, -.9), scale = 0.1, fg=(1,1,1,1))
         while not s.isDone:
             yield
         s.destroy()
         self._updateFunc = self.titleMenu().next
+        self.score.destroy()
+        self.max.destroy()
+        
         yield
+        
 
     def youWinScreen(self):
         s = PictureAnimation([
           'youwin.png'
         ], 5)
         s.play()
+        self.max = OnscreenText(text = 'Score: %i'%Globals.SCORE, pos = (-.4, -.9), scale = 0.1, fg=(1,1,1,1))
+        self.score = OnscreenText(text = 'Max Length: %i'%Globals.MAX, pos = (-.4, -.9), scale = 0.1, fg=(1,1,1,1))
         while not s.isDone:
             yield
         s.destroy()
         self._updateFunc = self.titleMenu().next
+        self.score.destroy()
+        self.max.destroy()
         yield
 
     def destroy(self):
