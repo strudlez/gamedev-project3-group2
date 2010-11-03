@@ -213,7 +213,7 @@ class Line:
             self.parent.timer.setText("Timer: %i"%self.parent.time)
             if(self.parent.sc<0):
                 self.parent.sc=0
-            if(self.parent.spawner%300==0):
+            if(self.parent.spawner%250==0):
                 num=random.randint(0,7)
                 self.parent.spawner=1
                 newpartier=Partier(LevelLocation('floor1', self.parent.spawns[num*2], self.parent.spawns[(num*2)+1]))
