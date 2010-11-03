@@ -41,6 +41,7 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         self.level=Level()
         
         self.line=Line(self)
+        self.leaving=[]
         
 
     def loadEnvironment(self):
@@ -114,6 +115,12 @@ class World(DirectObject):  #Subclassing here is necessary to accept events
         
         """moves the panda depending on the keymap"""
         elapsed = task.time - self.prevtime
+        
         self.line.move(elapsed,self.keymap)
+        for i in range(len(self.leaving)-1,-1,-1):
+            self.leaving[i].move()
+            if self.leaving[i].dead:
+                self.leaving[i].delete()
+                self.leaving.pop(i)
         self.prevtime = task.time
         return Task.cont

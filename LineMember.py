@@ -36,8 +36,6 @@ class LineMember():
         if front:
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
             self.levelWalker.walk(dir,units=-1)
-            #if number==2:
-                #self.levelWalker.walk(dir,units=1)
         
         self.node=render.attachNewNode("LineMember%d" % number)
         self.node.setPos(self.pos)
@@ -58,6 +56,7 @@ class LineMember():
             
         #if Globals.CONGASPEED:
             self.setGrid()
+            #self.levelWalker._level._grids[self.levelWalker._grid].printGrid()
             dir={0:'U',180:'D',270:'L',90:'R'}[self.angle]
             col=self.levelWalker.walk(dir)
             
@@ -76,6 +75,7 @@ class LineMember():
             if front.gridX!=self.gridX or front.gridY!=self.gridY:
                 self.canMove=1
         if self.canMove:
+            
             if not round(self.node.getY(),2)%TILESIZE and not round(self.node.getX(),2)%TILESIZE:
             #if Globals.CONGASPEED:
                 self.setGrid()
@@ -107,9 +107,10 @@ class LineMember():
         self.node.setH(angle)
         
         
-        angle = math.radians(self.angle)
-        dx = Globals.CONGASPEED * math.sin(angle)
-        dy = Globals.CONGASPEED * -math.cos(angle)
+        #angle = math.radians(self.angle)
+        #dx = Globals.CONGASTEP * math.sin(angle)
+        #dy = Globals.CONGASTEP * -math.cos(angle)
+        dx, dy = {0:(0, -Globals.CONGASTEP), 180:(0, Globals.CONGASTEP), 270:(-Globals.CONGASTEP, 0), 90:(Globals.CONGASTEP, 0)}[self.angle]
         
         self.node.setPos(self.node.getX() + dx, self.node.getY() + dy, 0)
         if COLLIDE_DEBUG:
